@@ -1,0 +1,52 @@
+{
+  "name": "dexible-proof-of-trade",
+  "version": "1.0.0",
+  "description": "Dexible PoT smart contracts",
+  "main": "src/index.js",
+  "author": "BUIDLHub, Inc.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "hh:compile": "yarn hardhat compile",
+    "hh:node": "yarn hardhat node --hostname 0.0.0.0",
+    "circuit": "./scripts/buildCircuit.sh 2 && ./scripts/buildCircuit.sh 16",
+    "test": "yarn hardhat test"
+  },
+  "devDependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/address": "^5.7.0",
+    "@ethersproject/bignumber": "^5.7.0",
+    "@ethersproject/bytes": "^5.7.0",
+    "@ethersproject/constants": "^5.7.0",
+    "@ethersproject/contracts": "^5.7.0",
+    "@ethersproject/hash": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
+    "@ethersproject/solidity": "^5.7.0",
+    "@ethersproject/transactions": "^5.7.0",
+    "@ethersproject/wallet": "^5.7.0",
+    "@ethersproject/web": "^5.7.1",
+    "@metamask/eth-sig-util": "^5.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.2.1",
+    "@nomiclabs/hardhat-etherscan": "^3.1.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.8.0",
+    "@openzeppelin/hardhat-upgrades": "^1.21.0",
+    "ethereum-waffle": "^3.4.4",
+    "ethereumjs-util": "^7.1.5",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.12.2",
+    "hardhat-deploy": "^0.11.20",
+    "hardhat-gas-reporter": "^1.0.9",
+    "merkletreejs": "^0.3.7",
+    "slot20": "^0.0.3",
+    "tmp-promise": "^3.0.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.8.0",
+    "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7",
+    "dotenv": "^16.0.3",
+    "snarkjs": "^0.5.0"
+  },
+  "packageManager": "yarn@3.1.1"
+}
