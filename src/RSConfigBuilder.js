@@ -1,3 +1,5 @@
+const { ethers } = require("hardhat");
+const { USD_PRECISION } = require("./constants");
 
 const verify = (fields, props) => {
     fields.forEach(f => {
@@ -33,6 +35,13 @@ class FeeTokenConfig {
     }
 }
 
+const MultiSigDefaults = {
+    requiredSigs: 2,
+    timelockSeconds: 2 * 86400,
+    logic: undefined,
+    approviders: []
+}
+
 class MultiSigConfig {
     static get tupleDefinition() {
         return '(uint8,uint32,address,address[])';
@@ -48,6 +57,13 @@ class MultiSigConfig {
             throw new Error("Approvers must be an array of addresses");
         }
     }
+}
+
+const RevshareDefaults = {
+    wrappedNativeToken: undefined,
+    baseMintThreshold: ethers.utils.parseUnits("100", USD_PRECISION),
+    rateRanges: undefined,
+    multiSigConfig: undefined
 }
 
 class RevshareConfig {
@@ -79,7 +95,9 @@ class RevshareConfig {
 module.exports = {
     verify,
     RevshareConfig,
+    RevshareDefaults,
     FeeTokenConfig,
     MintRateRangeConfig,
+    MultiSigDefaults,
     MultiSigConfig
 }

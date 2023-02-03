@@ -29,6 +29,7 @@ library LibRSUtils {
         for(uint i=0;i<feeTokens.length;i=incr(i)) {
             IERC20 ft = IERC20(feeTokens[i]);
             LibRevshare.PriceFeed storage pf = fs.allowedFeeTokens[address(ft)];
+            
             //make sure fee token still active
             //get the price of the asset
             uint price = getPrice(pf);

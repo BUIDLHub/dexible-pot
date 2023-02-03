@@ -42,6 +42,7 @@
     "tmp-promise": "^3.0.3"
   },
   "dependencies": {
+    "@arbitrum/sdk": "^3.0.0",
     "@openzeppelin/contracts-upgradeable": "^4.8.0",
     "circomlib": "^2.0.5",
     "circomlibjs": "^0.1.7",

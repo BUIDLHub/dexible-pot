@@ -6,7 +6,7 @@ const {setBalance: setWETHBalance, asTokenContract: asWETHContract} = require(".
 const {SwapRequest, ExecutionRequest, RouteRequest, FeeDetails, RouterRequest, TokenAmount, } = require("../src/DexibleSwap");
 const { ethers } = require("hardhat");
 
-const NET = 1;
+const NET = 42161;
 
 const bn = ethers.BigNumber.from;
 const inUnits = ethers.utils.parseUnits;
@@ -14,13 +14,15 @@ const inDecs = ethers.utils.formatUnits;
 
 const FEE_TOKEN = WETH_BY_NET[NET];
 const FT_DECS = 18;
-const IN_AMT = "1000";
+const IN_AMT = "10";
 const FTokenContract = asWETHContract(ethers.provider, NET);
 
 describe("TestSwap", function (){
     this.timeout(60000);
 
-    let props = {};
+    let props = {
+        chainId: NET
+    };
     let relay = null;
     let trader = null;
     before(async function() {
@@ -64,7 +66,7 @@ describe("TestSwap", function (){
             to: est.to,
             data: est.data,
             gasLimit: 600_000,
-            gasPrice: inUnits("25", 9)
+            gasPrice: inUnits(NET===42161 ? ".1":"25", 9)
         });
         const r = await txn.wait();
         console.log("Zrx gas", r.gasUsed.toString());
@@ -123,8 +125,13 @@ describe("TestSwap", function (){
             }),
             routes: [rr]
         });
+        const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
+            gasPrice: inUnits(NET===42161?".1":"25", 9)
+        });
+        console.log("Relay gas estimate", estGas.toString());
+
         const txn = await dexible.connect(relay).swap(sr, {
-            gasPrice: inUnits("25", 9)
+            gasPrice: inUnits(NET===42161?".1":"25", 9)
         });
         const r = await txn.wait();
         return r;

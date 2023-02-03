@@ -7,18 +7,15 @@ const {USD_PRECISION} = require("../constants");
 const DAY = 86400;
 const TIMELOCK = 2 * DAY;
 const BPS = 10_000;
-const NET = 1;
 
 const inUnits = (n,u) => ethers.utils.parseUnits(n.toString(), u);
-
-
 
 const buildInitConfig = (ctx) => {
     const {timelock, approvers, wallets} = ctx;
    const rateRanges = mintRates.map(m => new RSConfig.MintRateRangeConfig(m));
    const tokens = [];
    const feeds = [];
-   feeTokens[NET].forEach(f => {
+   feeTokens[ctx.chainId].forEach(f => {
     tokens.push(f.token);
     feeds.push(f.feed);
    });
@@ -28,7 +25,7 @@ const buildInitConfig = (ctx) => {
    });
    
    const multiSigConfig = new RSConfig.MultiSigConfig({
-    requiredSigs: 2,
+    ...RSConfig.MultiSigDefaults,
     timelockSeconds: timelock || TIMELOCK,
     logic: ctx.revshareVaultImpl.address,
     approvers: [
@@ -38,10 +35,8 @@ const buildInitConfig = (ctx) => {
    });
 
    return new RSConfig.RevshareConfig({
-    wrappedNativeToken: nativeWrappers[NET],
-    stdBpsRate: 8,
-    minBpsRate: 4,
-    baseMintThreshold: inUnits("100", USD_PRECISION),
+    ...RSConfig.RevshareDefaults,
+    wrappedNativeToken: nativeWrappers[ctx.chainId],
     rateRanges,
     feeTokenConfig,
     multiSigConfig

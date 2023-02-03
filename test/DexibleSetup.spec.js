@@ -17,7 +17,9 @@ const advanceTime = async (time) => {
 describe("DexibleSetup", function (){
     this.timeout(60000);
 
-    let props = {};
+    let props = {
+        chainId: NET
+    };
 
     before(async function() {
         props = await deployAll({

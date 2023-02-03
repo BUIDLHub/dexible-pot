@@ -1,8 +1,6 @@
 const {DeployStep} = require("../deployUtils/DeployStep");
-const {DexibleConfig} = require("./DexibleConfig");
-const {MultSigConfig, MultiSigConfig} = require("../RSConfigBuilder");
-const DAY = 86400;
-const TIMELOCK = DAY * 2;
+const {DexibleConfig, DexibleDefaults} = require("./DexibleConfig");
+const {MultiSigConfig, MultiSigDefaults} = require("../RSConfigBuilder");
 
 class DeployDexible extends DeployStep {
     constructor(props) {
@@ -86,16 +84,13 @@ class DeployDexibleProxy extends DeployStep {
         const app2 = approvers ? approvers[1] : wallets.all[wallets.all.length-2];
 
         const config = new DexibleConfig({
-            revshareSplitRatio: 50,
-            stdBpsRate: 8,
-            minBpsRate: 4,
+            ...DexibleDefaults,
             revshareManager: ctx.revshareVault.address,
             treasury: treasury || ctx.wallets.admin.address,
             dxblToken: ctx.dxblToken.address,
             roleManager: roleManager || ctx.wallets.owner.address,
             multiSigConfig: new MultiSigConfig({
-                requiredSigs: 2,
-                timelockSeconds: ctx.timelock || TIMELOCK,
+                ...MultiSigDefaults,
                 logic: ctx.dexibleImpl.address,
                 approvers: [
                     app1.address,

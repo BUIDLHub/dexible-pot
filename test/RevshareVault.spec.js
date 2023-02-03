@@ -5,7 +5,7 @@ const { ethers } = require("hardhat");
 const {asToken: asUSDCToken, asTokenContract: asUSDCContract, setBalance : setUSDCBalance} = require("./setup/USDC");
 const {USD_PRECISION} = require('../src/constants');
 
-const NET = 1;
+const NET = 42161;
 const DAY = 86400;
 const HR = DAY / 24;
 const inUnits = ethers.utils.parseUnits;
@@ -18,7 +18,9 @@ const sleep = ms => new Promise(done => setTimeout(done, ms));
 
 describe("RevshareVault", function() {
     this.timeout(60000);
-    let props = {};
+    let props = {
+        chainId: NET
+    };
 
     const setupVault = async () => {
         const {dxblToken, wallets, revshareVault} = props;

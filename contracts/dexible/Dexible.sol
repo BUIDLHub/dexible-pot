@@ -6,6 +6,7 @@ import "./IDexible.sol";
 import "../libraries/LibStorage.sol";
 import "./extensions/SwapExtension.sol";
 import "../token/IDXBL.sol";
+import "./IArbGasInfo.sol";
 
 /**
  * Dexible is the core contract used by the protocol to execution various actions. Swapping,
@@ -21,6 +22,7 @@ contract Dexible is ConfigurableDexible, IDexible {
         _;
     }
     using SwapExtension for SwapTypes.SwapRequest;
+    using LibDexible for LibDexible.DexibleStorage;
     using SafeERC20 for IERC20;
 
     /**
@@ -34,14 +36,7 @@ contract Dexible is ConfigurableDexible, IDexible {
     uint constant PRE_OP_GAS = 40_000;
 
     //final computation needed to compute and transfer gas fees
-    uint constant POST_OP_GAS = 60_000;
-
-    //final transfer and events for relay payment
-    uint constant RELAY_OP_GAS = 21_000;
-
-    //special case for Arbitrum network where L1 gas fee is not included in 
-    //the gas usage
-    uint16 constant ARBITRUM = 42161;
+    uint constant POST_OP_GAS = 80_000;
     
     //in-memory structure to keep track of execution state
     struct Payments {
@@ -54,6 +49,7 @@ contract Dexible is ConfigurableDexible, IDexible {
         uint outAmount;
         uint bpsAmount;
         uint gasAmount;
+        uint nativeGasAmount;
         uint preDXBLBalance;
         uint remainingInBalance;
     }
@@ -88,10 +84,10 @@ contract Dexible is ConfigurableDexible, IDexible {
      */
     function swap(SwapTypes.SwapRequest calldata request) external onlyRelay notPaused {
         //console.log("----------------------------- START SWAP ------------------------");
-
+       
         //compute how much gas we have at the outset, plus some gas for loading contract, etc.
         uint startGas = gasleft() + PRE_OP_GAS;
-        
+
         //get the current DXBL balance at the start to apply discounts
         uint preDXBL = LibStorage.getDexibleStorage().dxblToken.balanceOf(request.executionRequest.requester);
         
@@ -139,6 +135,7 @@ contract Dexible is ConfigurableDexible, IDexible {
             startGas: startGas,
             bpsAmount: 0,
             gasAmount: 0,
+            nativeGasAmount: 0,
             toProtocol: 0,
             toRevshare: 0,
             outToTrader: 0,
@@ -147,24 +144,17 @@ contract Dexible is ConfigurableDexible, IDexible {
             remainingInBalance: remainingInBalance
         });
 
-
-        uint totalGasUsed = 0;
         if(success) {
             //if we succeeded, then do successful post-swap ops
-          totalGasUsed = _handleSwapSuccess(request, payments); 
+            _handleSwapSuccess(request, payments); 
         }  else {
             //otherwise, handle as a failure
-            totalGasUsed =(startGas - gasleft())+ POST_OP_GAS;
-            _handleSwapFailure(request, feeIsInput, totalGasUsed);
-        }
-
-        if(totalGasUsed == 0) {
-            totalGasUsed = (startGas - gasleft()) + RELAY_OP_GAS;
+            _handleSwapFailure(request, payments);
         }
 
         //console.log("Total gas use for relay payment", totalGasUsed);
         //pay the relayer their gas fee if we have funds for it
-        _payRelayGas(totalGasUsed);
+        _payRelayGas(payments.nativeGasAmount);
         
         //console.log("----------------------------- END SWAP ------------------------");
         
@@ -239,6 +229,7 @@ contract Dexible is ConfigurableDexible, IDexible {
             isSelfSwap: true,
             startGas: 0,
             gasAmount: 0,
+            nativeGasAmount: 0,
             bpsAmount: 0,
             toProtocol: 0,
             toRevshare: 0,
@@ -259,16 +250,24 @@ contract Dexible is ConfigurableDexible, IDexible {
      * When a relay-based swap fails, we need to account for failure gas fees if the input
      * token is the fee token. That's what this function does
      */
-    function _handleSwapFailure(SwapTypes.SwapRequest calldata request, bool feeIsInput, uint gasUsed) private {
+    function _handleSwapFailure(SwapTypes.SwapRequest calldata request, Payments memory payments) private {
         //compute fees for failed txn
         
         //trader still owes the gas fees to the treasury/relay even though the swap failed. This is because
         //the trader may have set slippage too low, or other problems thus increasing the chance of failure.
         
-        if(feeIsInput) {
+        //compute gas fee in fee-token units
+        unchecked { 
+            //the total gas used thus far plus some post-op stuff that needs to get done
+            uint totalGas = (payments.startGas - gasleft()) + 40000;
+            
+            console.log("Estimated gas used for trader gas payment", totalGas);
+            payments.nativeGasAmount = (totalGas * tx.gasprice);
+        }
+        uint gasInFeeToken = _computeGasFee(request, payments.nativeGasAmount);
+        if(payments.feeIsInput) {
             console.log("Transferring partial input token to devteam for failure gas fees");
-            //compute gas fee in fee-token units
-            uint gasInFeeToken = _computeGasFee(request, gasUsed * tx.gasprice);
+            
             console.log("Failed gas fee", gasInFeeToken);
 
             //transfer input assets to treasury
@@ -286,7 +285,7 @@ contract Dexible is ConfigurableDexible, IDexible {
      * to trader and pays appropriate fees.
      */
     function _handleSwapSuccess(SwapTypes.SwapRequest calldata request, 
-                Payments memory payments) private returns (uint totalGasUsed) {
+                Payments memory payments) private {
         /**
          * on success, we need to divide fees between protocol and revshare
          * - affiliate gets portion of protocol's share
@@ -301,9 +300,6 @@ contract Dexible is ConfigurableDexible, IDexible {
 
         //pay fees
         _payAndDistribute(request, payments);
-
-        //return gas used for everything so far plus some post-op activity
-        return (payments.startGas - gasleft()) + POST_OP_GAS;
     }
 
     /**
@@ -327,7 +323,7 @@ contract Dexible is ConfigurableDexible, IDexible {
      * Distribute payments to revshare pool, affiliates, treasury, and trader
      */
     function _payAndDistribute(SwapTypes.SwapRequest memory request, 
-                                Payments memory payments) internal {
+                                Payments memory payments) internal  {
         _payRevshareAndAffiliate(request, payments);
         _payProtocolAndTrader(request, payments);
     }
@@ -344,6 +340,11 @@ contract Dexible is ConfigurableDexible, IDexible {
         payments.bpsAmount = _computeBpsFee(request, payments.feeIsInput, payments.preDXBLBalance, payments.outAmount);
     
         //console.log("Total bps fee", payments.bpsAmount);
+        uint minFee = LibStorage.getDexibleStorage().computeMinFeeUnits(address(request.executionRequest.fee.feeToken));
+        if(minFee > payments.bpsAmount) {
+            console.log("Trade too small. Charging minimum flat fee", minFee);
+            payments.bpsAmount = minFee;
+        }
 
         //revshare pool gets portion of bps fee collected
         payments.toRevshare = (payments.bpsAmount * LibStorage.getDexibleStorage().revshareSplitRatio) / 100;
@@ -390,27 +391,19 @@ contract Dexible is ConfigurableDexible, IDexible {
         
         if(!payments.isSelfSwap) {
             //If this was a relay-based swap, we need to pay treasury an estimated gas fee
-            uint gasTotal = 0;
-            uint cid;
-            assembly {
-                cid := chainid()
-            }
+            
+
             //we leave unguarded for gas savings since we know start gas is always higher 
             //than used and will never rollover without costing an extremely large amount of $$
             unchecked { 
-                //the total gas used thus far plus some post-op stuff that needs to get done
+                //the total gas used thus far plus some post-op buffer for transfers and events
                 uint totalGas = (payments.startGas - gasleft()) + POST_OP_GAS;
-                if(cid == ARBITRUM) {
-                    //arbitrum gas cost must include a portion for L1 submission. We account for it 
-                    //with a multiplier.
-                    totalGas *= 8;
-                }
+                
                 console.log("Estimated gas used for trader gas payment", totalGas);
-                gasTotal = totalGas * tx.gasprice;
+                payments.nativeGasAmount = (totalGas * tx.gasprice);
             }
-
             //use price oracle in vault to get native price in fee token
-            payments.gasAmount = _computeGasFee(request, gasTotal);
+            payments.gasAmount = _computeGasFee(request, payments.nativeGasAmount);
             console.log("Gas paid by trader", payments.gasAmount);
 
             //add gas payment to treasury portion
@@ -487,18 +480,8 @@ contract Dexible is ConfigurableDexible, IDexible {
      * does not include arbitrum multiplier but may include additional amount for post-op
      * gas estimates.
      */
-    function _payRelayGas(uint totalGasUsed) internal {
+    function _payRelayGas(uint gasFee) internal {
         
-        uint256 gasFee = totalGasUsed * tx.gasprice;
-        uint cid;
-        assembly {
-            cid := chainid()
-        }
-        if(cid == ARBITRUM) {
-            //arbitrum gas cost includes a portion for L1 submission. We account for it 
-            //with a multiplier.
-            gasFee *= 8;
-        }
         console.log("Relay Gas Reimbursement", gasFee);
         //if there is ETH in the contract, reimburse the relay that called the fill function
         if(address(this).balance < gasFee) {

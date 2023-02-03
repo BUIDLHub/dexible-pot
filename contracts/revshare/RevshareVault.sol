@@ -86,6 +86,7 @@ contract RevshareVault is ConfigurableRS, IRevshareVault {
     function feeTokenPriceUSD(address feeToken) external view override returns(uint) {
         LibRevshare.RevshareStorage storage rs = LibStorage.getRevshareStorage();
         LibRevshare.PriceFeed storage pf = rs.allowedFeeTokens[feeToken];
+        require(address(pf.feed) != address(0), "Unsupported fee token");
         return LibRSUtils.getPrice(pf);
     }
 

@@ -43,17 +43,17 @@ module.exports = {
       //gasLimit: 600000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
-      chainId: 1,
-      //chainId: 42161,
+      //chainId: 1,
+      chainId: 42161,
       //chainId: 43114,
       //chainId: 137,
       //chainId: 3,
       forking: {
-        //url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+        url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
         //url: 'https://api.avax.network/ext/bc/C/rpc',
         //blockNumber: 19871939
         //url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
-        url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
+        //url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
         //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`, 
       }
     },
