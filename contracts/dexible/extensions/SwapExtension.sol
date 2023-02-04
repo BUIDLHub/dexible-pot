@@ -37,10 +37,9 @@ library SwapExtension {
     event InsufficientGasFunds(address indexed relay, uint amount);
 
     /**
-     * NOTE: These gas settings are used to estmate the total gas being used
-     * to execute a transaction. Because solidity provides no way to determine
-     * the actual gas used until the txn is mined, we have to add buffer gas 
-     * amount to account for post-gas-fee computation logic.
+     * NOTE: Solidity provides no way to determine the actual gas used until the txn is mined. 
+     * Therefore, we have to add buffers to gas amounts to account for pre-load/post-op gas fee 
+     * computation logic.
      */
 
     struct SwapDetails {
