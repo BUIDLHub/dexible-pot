@@ -12,8 +12,8 @@ const bn = ethers.BigNumber.from;
 const inUnits = ethers.utils.parseUnits;
 const inDecs = ethers.utils.formatUnits;
 
-const FEE_TOKEN = WETH_BY_NET[NET];
-const FT_DECS = 18;
+const FEE_TOKEN = USDC_BY_NET[NET];
+const FT_DECS = 6;
 const IN_AMT = "10";
 const FTokenContract = asWETHContract(ethers.provider, NET);
 
@@ -56,7 +56,7 @@ describe("TestSwap", function (){
             chainId: NET,
             buyToken: WETH_BY_NET[NET],
             sellToken: USDC_BY_NET[NET],
-            sellAmount: fullInput.mul(98).div(100).toString(),
+            sellAmount: fullInput.mul(97).div(100).toString(),
             slippagePercentage: .005
         }
         
@@ -86,7 +86,7 @@ describe("TestSwap", function (){
             chainId: NET,
             buyToken: WETH_BY_NET[NET],
             sellToken: USDC_BY_NET[NET],
-            sellAmount: fullInput.mul(98).div(100).toString(),
+            sellAmount: fullInput.mul(97).div(100).toString(),
             slippagePercentage: .005
         }
         
@@ -131,6 +131,7 @@ describe("TestSwap", function (){
         console.log("Relay gas estimate", estGas.toString());
 
         const txn = await dexible.connect(relay).swap(sr, {
+            gasLimit: 2_000_000, //estGas,
             gasPrice: inUnits(NET===42161?".1":"25", 9)
         });
         const r = await txn.wait();

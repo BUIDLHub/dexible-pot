@@ -143,23 +143,6 @@ library LibDexible {
         emit ChangedBpsRates(changes.stdBps, changes.minBps);
     }
 
-    function computeMinFeeUnits(DexibleStorage storage rs, address feeToken) public view returns (uint) {
-        if(rs.minFeeUSD == 0) {
-            return 0;
-        }
-
-        IRevshareVault vault = IRevshareVault(rs.revshareManager);
-        //fee token price is in 30-dec units.
-        uint usdPrice = vault.feeTokenPriceUSD(feeToken);
-
-        uint8 ftDecs = IERC20Metadata(feeToken).decimals();
-
-        //fee USD configuration is expressed in 18-decimals. Have to convert to fee-token units and 
-        //account for price units
-        uint minFeeUSD = (rs.minFeeUSD * (ftDecs != 18 ? ((10**ftDecs) / 1e18) : 1)) * LibConstants.PRICE_PRECISION;
-
-        //then simply divide to get fee token units that equate to min fee USD
-        return  minFeeUSD / usdPrice;
-    }
+    
 
 }

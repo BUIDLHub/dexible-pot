@@ -37,9 +37,7 @@ class FeeTokenConfig {
 
 const MultiSigDefaults = {
     requiredSigs: 2,
-    timelockSeconds: 2 * 86400,
-    logic: undefined,
-    approviders: []
+    timelockSeconds: 2 * 86400 //2 days
 }
 
 class MultiSigConfig {
@@ -60,10 +58,7 @@ class MultiSigConfig {
 }
 
 const RevshareDefaults = {
-    wrappedNativeToken: undefined,
     baseMintThreshold: ethers.utils.parseUnits("100", USD_PRECISION),
-    rateRanges: undefined,
-    multiSigConfig: undefined
 }
 
 class RevshareConfig {

@@ -39,6 +39,12 @@ abstract contract DexibleRoleManagement {
         setRole(relay, LibConstants.RELAY);
     }
 
+    function addRelays(address[] calldata relays) public {
+        for(uint i=0;i<relays.length;++i) {
+            setRole(relays[i], LibConstants.RELAY);
+        }
+    }
+
     function removeRelay(address relay) public {
         removeRole(relay, LibConstants.RELAY);
     }

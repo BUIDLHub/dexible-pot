@@ -1,6 +1,7 @@
 const {DeployStep} = require("../deployUtils/DeployStep");
 const {DexibleConfig, DexibleDefaults} = require("./DexibleConfig");
 const {MultiSigConfig, MultiSigDefaults} = require("../RSConfigBuilder");
+const { ethers } = require("hardhat");
 
 class DeployDexible extends DeployStep {
     constructor(props) {
@@ -93,15 +94,16 @@ class DeployDexibleProxy extends DeployStep {
                 ...MultiSigDefaults,
                 logic: ctx.dexibleImpl.address,
                 approvers: [
-                    app1.address,
-                    app2.address
+                    app1.address?app1.address:app1,
+                    app2.address?app2.address:app2
                 ]
             })
         });
-        const impl = new ctx.ethers.Contract(ctx.dexibleImpl.address, ctx.dexibleImpl.interface || ctx.dexibleImpl.abi, ctx.wallets.owner);
+        //const impl = new ctx.ethers.Contract(ctx.dexibleImpl.address, ctx.dexibleImpl.interface || ctx.dexibleImpl.abi, ctx.wallets.owner);
+        const ifc = ctx.dexibleImpl.interface || new ethers.utils.Interface(ctx.dexibleImpl.abi);
         const cfgSig = `initialize(${DexibleConfig.tupleDefinition})`;
 
-        const init = impl.interface.encodeFunctionData(cfgSig, [config]);
+        const init = ifc.encodeFunctionData(cfgSig, [config]);
         return [ctx.dexibleImpl.address, init];
     }
 }

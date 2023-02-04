@@ -5,9 +5,10 @@ class DeployContext {
     constructor(props) {
         Object.assign(this, props);
         
-        const {deployments, forceDeploy} = props;
+        const {deployments, forceDeploy, wallets} = props;
         this.hre = hre;
         this.ethers = hre.ethers;
+        this.wallets = wallets;
         this.deployments = deployments || {
             getOrNull: async (name) => {
                 return null;
@@ -40,23 +41,23 @@ class DeployContext {
     }
 
     init = async () => {
-        const signers = await hre.ethers.getSigners();
-        const accts = hre.network.config.accounts;
-        for(let i=0;i<signers.length;++i) {
-            const a = accts;
-            const m = a.mnemonic;
-            const p = `${a.path}/${i}`;
-            const w = eths.Wallet.fromMnemonic(m, p);
-            signers[i].privateKey = w.privateKey.substring(2);
+        if(!this.wallets) {
+            const signers = await hre.ethers.getSigners();
+            const accts = hre.network.config.accounts;
+            for(let i=0;i<signers.length;++i) {
+                const a = accts;
+                const m = a.mnemonic;
+                const p = `${a.path}/${i}`;
+                const w = eths.Wallet.fromMnemonic(m, p);
+                signers[i].privateKey = w.privateKey.substring(2);
+            }
+            this.wallets = {
+                all: signers,
+                owner: signers[0],
+                admin: signers[1]
+            }
         }
-
         this.chainId = +(await this.ethers.provider.getNetwork()).chainId;
-
-        this.wallets = {
-            all: signers,
-            owner: signers[0],
-            admin: signers[1]
-        }
     }
 }
 

@@ -47,22 +47,23 @@ class Deployer {
 
         const libraries = await step.getLibraries();
         const args = await step.getDeployArgs();
-        console.log("Pausing between deployment steps...");
-        if(context.insertPause) {
-            await sleep(5000);
-        }
         
         console.log(`Deploying ${step.name} with args: ${args}`);
+        const deployer = step.getDeployerWallet();
         const con = await context.deployments.deploy(step.name, {
             log: true,
             libraries,
-            from: step.getDeployerWallet().address,
+            from: deployer.address ? deployer.address : deployer,
             args
         });
         console.log("Deployment gas used", con.receipt.gasUsed.toString());
         await step.updateContext({deployed: con});
         console.log(`Deployed ${step.name} to ${con.address}`);
         step.deployedNew = true;
+        if(context.pauseMS) {
+            console.log("Pausing between deployment steps...");
+            await sleep(context.pauseMS || 5000);
+        }
         return con.receipt.gasUsed;
 
         /*

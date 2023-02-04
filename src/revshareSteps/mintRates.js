@@ -1,6 +1,5 @@
 const { ethers } = require("hardhat");
 
-const BPS = 10_000;
 const rate = (n) => ethers.utils.parseUnits((n/100).toFixed(18), 18);
 
 const toMintRate = (min, max, r) => ({

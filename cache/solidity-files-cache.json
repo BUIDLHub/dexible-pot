@@ -268,8 +268,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/libraries/LibDexible.sol": {
-      "lastModificationDate": 1675382832989,
-      "contentHash": "8ebf2b44c13ad38c4ad5ed09386f6b7e",
+      "lastModificationDate": 1675436147295,
+      "contentHash": "cc3d22b4c9b8b3e00e8678c98e58f3fd",
       "sourceName": "contracts/libraries/LibDexible.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -408,8 +408,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/common/LibConstants.sol": {
-      "lastModificationDate": 1675278980043,
-      "contentHash": "bf4f4210f10385f4ccae3d281cd9ce52",
+      "lastModificationDate": 1675435962609,
+      "contentHash": "a182fdd16eaea2a7295a28d468f8b3de",
       "sourceName": "contracts/common/LibConstants.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1027,8 +1027,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/revshare/ConfigurableRS.sol": {
-      "lastModificationDate": 1675278980054,
-      "contentHash": "49ef8349295df7ebd7e7c69a68595831",
+      "lastModificationDate": 1675464042004,
+      "contentHash": "8e91f0c6a2f942dec92e97083c81e2ce",
       "sourceName": "contracts/revshare/ConfigurableRS.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1251,8 +1251,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/ConfigurableDexible.sol": {
-      "lastModificationDate": 1675278980045,
-      "contentHash": "5968f7113bc99647ea14751380f400ee",
+      "lastModificationDate": 1675464172683,
+      "contentHash": "b97a3943dabdeb626f88733c534562cd",
       "sourceName": "contracts/dexible/ConfigurableDexible.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1286,7 +1286,8 @@
       },
       "imports": [
         "./DexibleRoleManagement.sol",
-        "../common/MultiSigConfigurable.sol"
+        "../common/MultiSigConfigurable.sol",
+        "./IDexible.sol"
       ],
       "versionPragmas": [
         "^0.8.17"
@@ -1296,8 +1297,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/DexibleRoleManagement.sol": {
-      "lastModificationDate": 1675278980046,
-      "contentHash": "f0e643f666f34685d34fcca6cc252168",
+      "lastModificationDate": 1675446307666,
+      "contentHash": "d672bbf2d923660ec5eb150329712362",
       "sourceName": "contracts/dexible/DexibleRoleManagement.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1343,8 +1344,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/Dexible.sol": {
-      "lastModificationDate": 1675386375607,
-      "contentHash": "e549e9bf7848a95f2e5f7a44d9a6393a",
+      "lastModificationDate": 1675440186320,
+      "contentHash": "c1416e9d3753740b4f6de7d2cd3cf9e6",
       "sourceName": "contracts/dexible/Dexible.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1378,11 +1379,8 @@
       },
       "imports": [
         "./ConfigurableDexible.sol",
-        "./IDexible.sol",
         "../libraries/LibStorage.sol",
-        "./extensions/SwapExtension.sol",
-        "../token/IDXBL.sol",
-        "./IArbGasInfo.sol"
+        "./extensions/SwapExtension.sol"
       ],
       "versionPragmas": [
         "^0.8.17"
@@ -1392,8 +1390,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/IDexible.sol": {
-      "lastModificationDate": 1675278980047,
-      "contentHash": "6791c767e197fbaf97d3ee3b41d25f7b",
+      "lastModificationDate": 1675436038237,
+      "contentHash": "ac6f8f7dcd43f5043870bdd709ed11ad",
       "sourceName": "contracts/dexible/IDexible.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1436,8 +1434,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/extensions/SwapExtension.sol": {
-      "lastModificationDate": 1675279990716,
-      "contentHash": "1823ec13ff0316b8956ba0c283ece161",
+      "lastModificationDate": 1675467451791,
+      "contentHash": "cabee281fc0d621ed1d9c1d96f1c374c",
       "sourceName": "contracts/dexible/extensions/SwapExtension.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1474,6 +1472,7 @@
         "../../common/SwapTypes.sol",
         "../../common/LibConstants.sol",
         "../../revshare/IRevshareVault.sol",
+        "../../libraries/LibFees.sol",
         "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
         "hardhat/console.sol"
@@ -1663,10 +1662,10 @@
         "DexibleProxy"
       ]
     },
-    "/Users/mdcoon/git/dexible-pot/contracts/dexible/IArbGasInfo.sol": {
-      "lastModificationDate": 1675371861576,
-      "contentHash": "4834f29eda0aa9aec11b9fc028b3625b",
-      "sourceName": "contracts/dexible/IArbGasInfo.sol",
+    "/Users/mdcoon/git/dexible-pot/contracts/libraries/LibFees.sol": {
+      "lastModificationDate": 1675436179547,
+      "contentHash": "d7c018677da745b76309eb557947d5b9",
+      "sourceName": "contracts/libraries/LibFees.sol",
       "solcConfig": {
         "version": "0.8.17",
         "settings": {
@@ -1697,12 +1696,16 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "./LibStorage.sol",
+        "../common/SwapTypes.sol",
+        "../token/IDXBL.sol"
+      ],
       "versionPragmas": [
         "^0.8.17"
       ],
       "artifacts": [
-        "IArbGasInfo"
+        "LibFees"
       ]
     }
   }

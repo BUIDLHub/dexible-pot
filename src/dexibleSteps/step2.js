@@ -11,6 +11,17 @@ class DeploySwapExtension extends DeployStep {
         });
     }
 
+    getLibraries() {
+       
+        if(!this.sequence.context.libFees) {
+            throw new Error("Missing LibFees in sequence context");
+        }
+        const ctx = this.sequence.context;
+        return  {
+            LibFees: ctx.libFees.address
+        }
+    }
+
     updateContext({deployed}) {
         this.sequence.context.swapExtension = deployed;
     }

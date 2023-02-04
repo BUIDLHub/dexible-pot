@@ -34,21 +34,31 @@ abstract contract ConfigurableRS is MultiSigConfigurable {
     /*************************************************************************
     * Set the DXBL token contract. One time only
     **************************************************************************/
-    function setDXBL(address token) public {
+    function setDXBL(address token) public onlyApprover {
         LibRevshare.RevshareStorage storage rs = LibStorage.getRevshareStorage();
         require(token != address(0), "Invalid DXBL token address");
         require(address(rs.dxbl) == address(0), "Already initialized DXBL address");
         rs.dxbl = IDXBL(token);
     }
 
+    //read the current DXBL token setting
+    function getDXBLToken() public view returns(address) {
+        return address(LibStorage.getRevshareStorage().dxbl);
+    }
+
     /*************************************************************************
     * Set the Dexible contract. One time only
     **************************************************************************/
-    function setDexible(address dex) public {
+    function setDexible(address dex) public onlyApprover {
         LibRevshare.RevshareStorage storage rs = LibStorage.getRevshareStorage();
         require(rs.dexible == address(0), "Already initialized Dexible address");
         require(dex != address(0), "Invalid dexible address");
         rs.dexible = dex;
+    }
+
+    //get the dexible contract address
+    function getDexibleContract() public view returns (address) {
+        return address(LibStorage.getRevshareStorage().dexible);
     }
 
     /*************************************************************************

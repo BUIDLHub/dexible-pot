@@ -19,6 +19,16 @@ const feeTokens = {
             feed: "0x50834f3163758fcc1df9973b6e91f0f0f0434ad3"
         },
         {
+            //USDT
+            token: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
+            feed: "0x3f3f5df88dc9f13eac63df89ec16ef6e7e25dde7"
+        },
+        {
+            //DAI
+            token: "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+            feed: "0xc5c8e77b397e531b8ec06bfb0048328b30e9ecfb"
+        },
+        {
             //WETH
             token: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
             feed: "0x639fe6ab55c921f74e7fac1ee960c0b6293ba612"

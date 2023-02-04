@@ -21,10 +21,26 @@ const deployRevshare = async (props, ctx) => {
 }
 
 const setDexibleAddressesOnVault = async (props) => {
-    const {revshareVault, dexible, dxblToken, wallets} = props;
-    const vault = revshareVault.connect(wallets.dexibleAdmin);
-    await vault.setDexible(dexible.address);
-    await vault.setDXBL(dxblToken.address);
+    const {revshareVault, dexible, ethers, dxblToken, wallets} = props;
+    let admin = wallets.dexibleAdmin;
+    if(!admin.address) {
+        const key = `0x${process.env.MAINNET_OWNER}`;
+        if(!key) {
+            throw new Error("Could not find MAINNET_OWNER key in env");
+        }
+        admin = new ethers.Wallet(key, ethers.provider);
+    }
+
+    const vault = revshareVault.connect(admin);
+    const dex = await vault.getDexibleContract();
+
+    if(dex == "0x0000000000000000000000000000000000000000") {
+        console.log("Setting Dexible and DXBL Contract addresses to:", dexible.address, dxblToken.address);
+        await Promise.all([
+            vault.setDexible(dexible.address),
+            vault.setDXBL(dxblToken.address)
+        ]);
+    }
 }
 
 module.exports = {

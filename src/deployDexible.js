@@ -19,6 +19,14 @@ const deployDexible = async (props, ctx) => {
     return ctx;
 }
 
+
+const setDexibleRelays = async (props) => {
+    const {relays, dexible} = props;
+    const d = dexible.connect(wallets.dexibleAdmin);
+    await d.addRelays(relays);
+}
+
 module.exports = {
-    deployDexible
+    deployDexible,
+    setDexibleRelays
 }

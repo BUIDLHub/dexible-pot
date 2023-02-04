@@ -15,6 +15,11 @@ task("accounts", "Prints the list of accounts", async () => {
   }
 });
 
+const accounts = [
+  `0x${process.env.MAINNET_OWNER}`, 
+  `0x${process.env.MAINNET_PROXY_ADMIN}`
+]
+
 // You have to export an object to set up your config
 // This object can have the following optional entries:
 // defaultNetwork, networks, solc, and paths.
@@ -31,7 +36,9 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_KEY
+    apiKey: {
+      arbitrumOne: process.env.ETHERSCAN_KEY_arbitrum
+    }
   },
   networks: {
     hardhat: {
@@ -57,37 +64,13 @@ module.exports = {
         //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`, 
       }
     },
-    
-    rinkeby: {
-      gas: 10000000000,
-      allowUnlimitedContractSize: true,
-      timeout: 600000,
-      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_ID}`,
-      accounts: [`0x${process.env.RINKEBY_OWNER}`, `0x${process.env.RINKEBY_PROXY_ADMIN}`]
-    },
-    kovan: {
-      gas: 10000000000,
-      gasPrice: 1000000000,
-      allowUnlimitedContractSize: true,
-      timeout: 6000000,
-      url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
-      accounts: [`0x${process.env.KOVAN_OWNER}`, `0x${process.env.KOVAN_PROXY_ADMIN}`]
-    },
-    ropsten: {
-      gas: 10000000000,
-      gasPrice: 10000000000,
-      allowUnlimitedContractSize: true,
-      timeout: 6000000,
-      url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
-      accounts: [`0x${process.env.ROPSTEN_OWNER}`, `0x${process.env.ROPSTEN_PROXY_ADMIN}`]
-    },
     mainnet: {
       gas: 80000000000,
       gasPrice: 23000000000,
       allowUnlimitedContractSize: true,
       timeout: 600000,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+      accounts
     },
     polygon: {
       gas: 80000000000,
@@ -95,45 +78,43 @@ module.exports = {
       allowUnlimitedContractSize: true,
       timeout: 6000000,
       url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+      accounts
     },
     avalanche: {
       url: 'https://api.avax.network/ext/bc/C/rpc',
       gasPrice: 25000000000,
       chainId: 43114,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+      accounts
     },
     bsc: {
       url: "https://bsc-dataseed1.ninicoin.io",
       gasPrice: 5000000000,
       chainId: 56,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+      accounts
     },
     fantom: {
       url: "https://rpc.ftm.tools",
       gasPrice: 1130000000000,
       chainId: 250,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+      accounts
     },
     goerli: {
       url: `https://goerli.infura.io/v3/${process.env.INFURA_ID}`,
       gasPrice: 8000000000,
       chainId: 5,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+      accounts
     },
     arbitrum: {
       chainId: 42161,
       url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
       gasPrice: 200000000,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
-    
+      accounts
     },
     optimism: {
       chainId: 10,
       url: `https://optimism-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
       gasPrice: 20000000,
-      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
-    
+      accounts
     }
   }
 };

@@ -32,6 +32,57 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "stdRate",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "minRate",
+          "type": "uint32"
+        }
+      ],
+      "name": "ChangedBpsRates",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "split",
+          "type": "uint8"
+        }
+      ],
+      "name": "ChangedRevshareSplit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "old",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newRevshare",
+          "type": "address"
+        }
+      ],
+      "name": "ChangedRevshareVault",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
           "internalType": "address",
           "name": "relay",
@@ -145,6 +196,99 @@
       ],
       "name": "SwapSuccess",
       "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "contract IERC20",
+              "name": "feeToken",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint112",
+                  "name": "amount",
+                  "type": "uint112"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct TokenTypes.TokenAmount",
+              "name": "tokenIn",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint112",
+                  "name": "amount",
+                  "type": "uint112"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct TokenTypes.TokenAmount",
+              "name": "tokenOut",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint112",
+                      "name": "amount",
+                      "type": "uint112"
+                    },
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "token",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct TokenTypes.TokenAmount",
+                  "name": "routeAmount",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "routerData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapTypes.RouterRequest[]",
+              "name": "routes",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct SwapTypes.SelfSwap",
+          "name": "request",
+          "type": "tuple"
+        }
+      ],
+      "name": "selfSwap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [

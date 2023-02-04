@@ -6,12 +6,7 @@ const DexibleDefaults = {
     revshareSplitRatio: 50,
     stdBpsRate: 8,
     minBpsRate: 4,
-    revshareManager: undefined,
-    treasury: undefined,
-    dxblToken: undefined,
-    roleManager: undefined,
-    minFeeUSD: ethers.utils.parseUnits(".05", 18).toString(),
-    multiSigConfig: undefined
+    minFeeUSD: 0 //ethers.utils.parseUnits(".05", 18).toString(),
 }
 
 class DexibleConfig {

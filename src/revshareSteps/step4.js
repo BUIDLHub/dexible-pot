@@ -1,4 +1,5 @@
 const {DeployStep} = require("../deployUtils/DeployStep");
+const {tokenConfigs, discountBPS} = require("../tokenConfig");
 
 class DeployDXBL extends DeployStep {
     constructor(props) {
@@ -15,12 +16,14 @@ class DeployDXBL extends DeployStep {
     getDeployArgs() {
 
         const ctx = this.sequence.context;
+        const info = tokenConfigs[ctx.chainId];
+        const bps = discountBPS;
         /*
         address _minter, 
                 uint32 discountRate,
                 string memory name, 
                 string memory symbol*/
-        return [ctx.revshareVault.address, 5, "Dexible.Arbitrum", "DXBL.r"];
+        return [ctx.revshareVault.address, bps, info.name, info.symbol];
     }
 }
 

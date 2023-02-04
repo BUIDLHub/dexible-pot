@@ -111,3 +111,5 @@ dist
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+deployments

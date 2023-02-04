@@ -43,10 +43,26 @@ class DeployLibMultiSig extends DeployStep {
     }
 }
 
+class DeployLibFees extends DeployStep {
+    constructor(props) {
+        super({
+            ...props,
+            name: "LibFees"
+        });
+    }
+
+    updateContext({deployed}) {
+        this.sequence.context.libFees = deployed;
+    }
+}
+
 const addStep = async ({sequence}) => {
     sequence.steps.push(new DeployLibRoleManagement({sequence}));
     if(!sequence.context.libMultiSig) {
         sequence.steps.push(new DeployLibMultiSig({sequence}));
+    }
+    if(!sequence.context.libFees) {
+        sequence.steps.push(new DeployLibFees({sequence}));
     }
     sequence.steps.push(new DeployLibDexible({sequence}));
 }

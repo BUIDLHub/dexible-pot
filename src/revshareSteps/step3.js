@@ -24,13 +24,16 @@ const buildInitConfig = (ctx) => {
     priceFeeds: feeds
    });
    
+   const app1 = approvers ? approvers[0] : wallets.all[wallets.all.length-1].address;
+   const app2 = approvers ? approvers[1] : wallets.all[wallets.all.length-2].address;
+
    const multiSigConfig = new RSConfig.MultiSigConfig({
     ...RSConfig.MultiSigDefaults,
     timelockSeconds: timelock || TIMELOCK,
     logic: ctx.revshareVaultImpl.address,
     approvers: [
-        approvers ? approvers[0].address : wallets.all[wallets.all.length-1].address,
-        approvers ? approvers[1].address : wallets.all[wallets.all.length-2].address
+        app1.address ? app1.address : app1,
+        app2.address ? app2.address : app2
     ]
    });
 
@@ -79,12 +82,11 @@ class DeployRevshareVaultProxy extends DeployStep {
     getDeployArgs() {
 
         const ctx = this.sequence.context;
-        
-        const impl = new ctx.ethers.Contract(ctx.revshareVaultImpl.address, ctx.revshareVaultImpl.interface || ctx.revshareVaultImpl.abi, ctx.wallets.owner);
+        const ifc = ctx.revshareVaultImpl.interface || new ethers.utils.Interface(ctx.revshareVaultImpl.abi);
         const config = buildInitConfig(ctx);
         const fnDef = `initialize(${RSConfig.RevshareConfig.tupleDefinition})`;
-        const init = impl.interface.encodeFunctionData(fnDef, [config]);
-        return [impl.address, init];
+        const init = ifc.encodeFunctionData(fnDef, [config]);
+        return [ctx.revshareVaultImpl.address, init];
     }
 
 }

@@ -3,19 +3,16 @@ pragma solidity ^0.8.17;
 
 import "./DexibleRoleManagement.sol";
 import "../common/MultiSigConfigurable.sol";
+import "./IDexible.sol";
 
 /**
  * Base contract to add configuration options for Dexible contract. All config settings
  * require multi-sigs since we extend the MultiSigConfigurable contract. 
  */
-abstract contract ConfigurableDexible is MultiSigConfigurable, DexibleRoleManagement {
+abstract contract ConfigurableDexible is IDexible, MultiSigConfigurable, DexibleRoleManagement {
 
     using LibDexible for LibDexible.DexibleStorage;
-    event ChangedRevshareVault(address indexed old, address indexed newRevshare);
-    event ChangedRevshareSplit(uint8 split);
-    event ChangedBpsRates(uint32 stdRate, uint32 minRate);
     
-
     /**
      * Get the current BPS fee rates
      */
@@ -59,5 +56,19 @@ abstract contract ConfigurableDexible is MultiSigConfigurable, DexibleRoleManage
      */
     function setRevshareSplit(uint8 split) public afterApproval(this.setRevshareSplit.selector) {
         LibStorage.getDexibleStorage().setRevshareSplit(split);
+    }
+
+    /**
+     * Set a new minimum fee
+     */
+    function setNewMinFee(uint112 minFee) public afterApproval(this.setNewMinFee.selector) {
+        LibStorage.getDexibleStorage().minFeeUSD = minFee;
+    }
+
+    /**
+     * Get the current min fee USD value
+     */
+    function minFeeUSD() public view returns (uint112) {
+        return LibStorage.getDexibleStorage().minFeeUSD;
     }
 }
