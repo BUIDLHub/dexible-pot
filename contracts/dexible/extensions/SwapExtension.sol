@@ -57,11 +57,14 @@ library SwapExtension {
         uint remainingInBalance;
     }
 
+    /**
+     * For relayed txns, this is called in a try/catch block to unwind all transfers so that only 
+     * failed gas fees are paid. 
+     */
     function fill(SwapTypes.SwapRequest calldata request, SwapDetails memory details) public returns (SwapDetails memory) {
         preCheck(request, details);
         details.outAmount = request.tokenOut.token.balanceOf(address(this));
-        preFill(request);
-
+        
         for(uint i=0;i<request.routes.length;++i) {
             SwapTypes.RouterRequest calldata rr = request.routes[i];
             IERC20(rr.routeAmount.token).safeApprove(rr.spender, rr.routeAmount.amount);
@@ -89,14 +92,18 @@ library SwapExtension {
         //get post-swap balance so we know how much refund if we didn't spend all
         uint cBal = request.tokenIn.token.balanceOf(address(this));
 
-        //deliberately setting remaining balance to 0 if less amount than current balance.
-        //this will force an underflow exception if we attempt to deduct more fees than
-        //remaining balance
-        details.remainingInBalance = cBal > details.remainingInBalance ? cBal - details.remainingInBalance : 0;
+        //set the post-swap balance of input token for fees and any left over back to trader.
+        //if there was a problem, this will be 0 since the try/catch would have rolled 
+        //all transfer back
+        details.remainingInBalance = cBal;
 
         console.log("Remaining input balance", details.remainingInBalance);
 
         if(success) {
+            //Remaining balance was set to the full beginning balance of input tokens. We expect the end balance 
+            //to be less if we successfully swapped and nothing was reverted. 
+            //If it's more, something's way off and we revert
+            require(cBal <= details.remainingInBalance, "Input balance post-swap was higher");
             //if we succeeded, then do successful post-swap ops
             handleSwapSuccess(request, details); 
         }  else {
@@ -130,12 +137,14 @@ library SwapExtension {
             details.nativeGasAmount = (totalGas * tx.gasprice);
         }
         uint gasInFeeToken = LibFees.computeGasFee(request, details.nativeGasAmount);
+        
         if(details.feeIsInput) {
             console.log("Transferring partial input token to devteam for failure gas fees");
             
             console.log("Failed gas fee", gasInFeeToken);
 
-            //transfer input assets to treasury
+            //transfer input assets from trader to treasury. Recall that any previous transfer amount
+            //to this contract was rolled back on failure, so we transfer the funds for gas only
             request.executionRequest.fee.feeToken.safeTransferFrom(request.executionRequest.requester, LibStorage.getDexibleStorage().treasury, gasInFeeToken);
             
             emit SwapFailed(request.executionRequest.requester, request.executionRequest.fee.feeToken, gasInFeeToken);
@@ -188,7 +197,7 @@ library SwapExtension {
     }
 
     /**
-     * Payout bps portions to revshare pool and affiliate
+     * Payout bps portions to revshare pool and any associated affiliate
      */
     function payRevshareAndAffiliate(SwapTypes.SwapRequest memory request, 
                                 SwapDetails memory details) public {
@@ -210,9 +219,11 @@ library SwapExtension {
 
         console.log("To revshare", details.toRevshare);
 
-        //protocol gets remaining bps but affiliate fees come out of its portion. This could revert if
+        //protocol gets remaining bps but affiliate fees come out of its portion. Will revert if
         //Dexible miscalculated the affiliate reward portion. However, the call would revert here and
-        //Dexible relay would pay the gas fee.
+        //Dexible relay would pay the gas fee for its mistake. Self-swap has no affiliate so no revert
+        //would happen.
+        require(request.executionRequest.fee.affiliatePortion < details.bpsAmount-details.toRevshare, "Miscalculated affiliate portion");
         details.toProtocol = (details.bpsAmount-details.toRevshare) - request.executionRequest.fee.affiliatePortion;
 
         console.log("Protocol pre-gas", details.toProtocol);
@@ -228,13 +239,17 @@ library SwapExtension {
             details.outToTrader = details.outAmount - total;
         } else {
             //this will revert with error if total is more than we have available
-            //forcing caller to pay gas for insufficient buffer in input amount vs. traded amount
+            //forcing caller to pay gas for insufficient buffer in input amount vs. traded amount 
+            //(whether that's Dexible relay or trader)
             require(details.remainingInBalance > total, "Insufficient input funds to pay fees");
+            //we take the total off any remaining transferred input amount so we can refund any leftover
             details.remainingInBalance -= total;
         }
 
-        //now distribute fees
+        //now distribute fees in fee token (which will input token we've transferred and have remaining 
+        //balance) or the output token (which was the result of swap call to DEXs)
         IERC20 feeToken = request.executionRequest.fee.feeToken;
+
         //pay revshare their portion
         feeToken.safeTransfer(LibStorage.getDexibleStorage().revshareManager, details.toRevshare);
         if(request.executionRequest.fee.affiliatePortion > 0) {
@@ -258,12 +273,12 @@ library SwapExtension {
             //we leave unguarded for gas savings since we know start gas is always higher 
             //than used and will never rollover without costing an extremely large amount of $$
             unchecked { 
-                console.log("Start gas", details.startGas, "Left", gasleft());
+                //console.log("Start gas", details.startGas, "Left", gasleft());
 
                 //the total gas used thus far plus some post-op buffer for transfers and events
                 uint totalGas = (details.startGas - gasleft()) + LibConstants.POST_OP_GAS;
                 
-                console.log("Estimated gas used for trader gas payment", totalGas);
+                //console.log("Estimated gas used for trader gas payment", totalGas);
                 details.nativeGasAmount = (totalGas * tx.gasprice);
             }
             //use price oracle in vault to get native price in fee token
@@ -275,8 +290,10 @@ library SwapExtension {
             console.log("Payment to protocol", details.toProtocol);
 
             if(!details.feeIsInput) {
-                //if output was fee, deduct gas payment from proceeds
-                require(details.outToTrader >= details.gasAmount, "Insufficient output to pay gas fees");
+                //if output was fee, deduct gas payment from proceeds, revert if there isn't enough output
+                //for it (should have been caught offchain before submit). We make sure the trader gets 
+                //something out of the deal by ensuring output is more than gas.
+                require(details.outToTrader > details.gasAmount, "Insufficient output to pay gas fees");
                 details.outToTrader -= details.gasAmount;
             } else {
                 //will revert if insufficient remaining balance to cover gas causing caller
@@ -297,7 +314,7 @@ library SwapExtension {
         
         //refund any remaining over-estimate of input amount needed
         if(details.remainingInBalance > 0) {
-            //console.log("Total refund to trader", payments.remainingInBalance);
+            console.log("Total refund to trader", details.remainingInBalance);
             request.tokenIn.token.safeTransfer(request.executionRequest.requester, details.remainingInBalance);
         }   
         emit SwapSuccess(request.executionRequest.requester,
@@ -311,7 +328,7 @@ library SwapExtension {
         //console.log("Finished swap");
     }
 
-    function preCheck(SwapTypes.SwapRequest calldata request, SwapDetails memory details) public view {
+    function preCheck(SwapTypes.SwapRequest calldata request, SwapDetails memory details) public {
         //make sure fee token is allowed
         address fToken = address(request.executionRequest.fee.feeToken);
         bool ok = IRevshareVault(LibStorage.getDexibleStorage()
@@ -335,12 +352,7 @@ library SwapExtension {
             //if it is make sure it doesn't match the first router input amount to account for fees.
             require(request.tokenIn.amount > request.routes[0].routeAmount.amount, "Input fee token amount does not account for fees");
         }
-
-        //get the starting input balance for the input token so we know how much was spent for the swap
-        details.remainingInBalance = request.tokenIn.token.balanceOf(address(this));
-    }
-
-    function preFill(SwapTypes.SwapRequest calldata request) public {
+        
         //transfer input tokens to router so it can perform dex trades
         console.log("Transfering input for trading:", request.tokenIn.amount);
         //we transfer the entire input, not the router-only inputs. This is to 
@@ -348,6 +360,9 @@ library SwapExtension {
         //to the trader in the end.
         request.tokenIn.token.safeTransferFrom(request.executionRequest.requester, address(this), request.tokenIn.amount);
         console.log("Expected output", request.tokenOut.amount);
+
+        //set the starting input balance for the input token so we know how much was spent for the swap
+        details.remainingInBalance = request.tokenIn.amount;
     }
 
 

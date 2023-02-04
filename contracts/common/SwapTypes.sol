@@ -54,6 +54,11 @@ library SwapTypes {
         IERC20 feeToken;
 
         //input token and full amount
+        /*
+         * NOTE: it's possible to swap native asset vs. wrapped asset when self-submitting. Could
+         * use some standard "ETH" address to represent native asset and then verify value sent
+         * with txn. Then wrap that in the token for swapping as part of the trade.
+         */
         TokenTypes.TokenAmount tokenIn;
 
         //output token and minimum amount out expected
