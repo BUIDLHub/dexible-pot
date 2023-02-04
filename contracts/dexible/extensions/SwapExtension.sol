@@ -43,11 +43,6 @@ library SwapExtension {
      * amount to account for post-gas-fee computation logic.
      */
 
-    
-
-    //final computation needed to compute and transfer gas fees
-    uint constant POST_OP_GAS = 80_000;
-
     struct SwapDetails {
         bool feeIsInput;
         bool isSelfSwap;
@@ -267,7 +262,7 @@ library SwapExtension {
                 console.log("Start gas", details.startGas, "Left", gasleft());
 
                 //the total gas used thus far plus some post-op buffer for transfers and events
-                uint totalGas = (details.startGas - gasleft()) + POST_OP_GAS;
+                uint totalGas = (details.startGas - gasleft()) + LibConstants.POST_OP_GAS;
                 
                 console.log("Estimated gas used for trader gas payment", totalGas);
                 details.nativeGasAmount = (totalGas * tx.gasprice);
