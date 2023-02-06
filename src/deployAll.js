@@ -11,11 +11,12 @@ const deployAll = async (props) => {
         forceDeploy: props ? props.forceDeploy : false
     });
     await ctx.init();
-    //await deployRevshare(props, ctx);
-    //await deployDexible(props, ctx);
+    await deployRevshare(props, ctx);
     await deployArbOracle(props, ctx);
+    await deployDexible(props, ctx);
+    
 
-    /*await setDexibleAddressesOnVault(ctx);
+    //await setDexibleAddressesOnVault(ctx);
     //await setDexibleRelays(ctx);
     const {dxblToken, dexible, revshareVault, arbGasOracle} = ctx;
     console.group("---------------- FINAL ADDRESSES ---------------------");
