@@ -102,11 +102,25 @@ const verifyDexibleProxy = async (props) => {
     });
 }
 
+const verifyArbOracle = async (props) => {
+    await _verifyContract({
+        ...props,
+        contractName: "ArbitrumGasOracle"
+    });
+}
+
 module.exports = async (props) => {
+    if(process.env.SKIP_VERIFY) {
+        console.log("Skipping verification");
+        return;
+    }
+    /*
     await verifyLibMultiSig(props);
     await verifyDXBL(props);
     await verifyRevshareVault(props);
     await verifyRevshareVaultProxy(props);
     await verifyDexible(props);
     await verifyDexibleProxy(props);
+    */
+   await verifyArbOracle(props);
 }

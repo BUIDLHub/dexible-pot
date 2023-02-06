@@ -33,13 +33,14 @@ const setDexibleAddressesOnVault = async (props) => {
 
     const vault = revshareVault.connect(admin);
     const dex = await vault.getDexibleContract();
+    const token = await vault.getDXBLToken();
 
     if(dex == "0x0000000000000000000000000000000000000000") {
         console.log("Setting Dexible and DXBL Contract addresses to:", dexible.address, dxblToken.address);
-        await Promise.all([
-            vault.setDexible(dexible.address),
-            vault.setDXBL(dxblToken.address)
-        ]);
+        await  vault.setDexible(dexible.address);
+    }
+    if(token == "0x0000000000000000000000000000000000000000") {
+        await vault.setDXBL(dxblToken.address);
     }
 }
 

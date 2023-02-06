@@ -5,6 +5,7 @@ import "../token/IDXBL.sol";
 import "./LibMultiSig.sol";
 import "../revshare/IRevshareVault.sol";
 import "../common/LibConstants.sol";
+import "../dexible/oracle/IArbitrumGasOracle.sol";
 
 /**
  * Primary library for Dexible contract ops and storage. All functions are protected by
@@ -58,6 +59,9 @@ library LibDexible {
         //address of account to assign roles
         address roleManager;
 
+        //arbitrum gas oracle contract address
+        address arbGasOracle;
+
         //minimum flat fee to charge if bps fee is too low
         uint112 minFeeUSD;
 
@@ -89,6 +93,9 @@ library LibDexible {
 
         //the DXBL token
         IDXBL dxblToken;
+
+        //gas oracle for arb network
+        IArbitrumGasOracle arbitrumGasOracle;
     }
 
     /**
@@ -112,6 +119,7 @@ library LibDexible {
         ds.stdBpsRate = config.stdBpsRate;
         ds.minBpsRate = config.minBpsRate;
         ds.minFeeUSD = config.minFeeUSD; //can be 0
+        ds.arbitrumGasOracle = IArbitrumGasOracle(config.arbGasOracle);
     }
 
     /**

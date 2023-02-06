@@ -7,6 +7,7 @@ import "../../common/SwapTypes.sol";
 import "../../common/LibConstants.sol";
 import "../../revshare/IRevshareVault.sol";
 import "../../libraries/LibFees.sol";
+import "../../libraries/LibGas.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -20,6 +21,7 @@ import "hardhat/console.sol";
  */
 library SwapExtension {
     using SafeERC20 for IERC20;
+    using LibGas for LibDexible.DexibleStorage;
 
     event SwapFailed(address indexed trader, 
                      IERC20 feeToken, 
@@ -129,16 +131,19 @@ library SwapExtension {
         //the trader may have set slippage too low, or other problems thus increasing the chance of failure.
         
         //compute gas fee in fee-token units
-        unchecked { 
-            //the total gas used thus far plus some post-op stuff that needs to get done
-            uint totalGas = (details.startGas - gasleft()) + 40000;
-            
-            console.log("Estimated gas used for trader gas payment", totalGas);
-            details.nativeGasAmount = (totalGas * tx.gasprice);
-        }
-        uint gasInFeeToken = LibFees.computeGasFee(request, details.nativeGasAmount);
+       
+        
         
         if(details.feeIsInput) {
+            unchecked { 
+                //the total gas used thus far plus some post-op stuff that needs to get done
+                uint totalGas = (details.startGas - gasleft()) + 40000;
+                
+                console.log("Estimated gas used for trader gas payment", totalGas);
+                details.nativeGasAmount = LibStorage.getDexibleStorage().computeGasCost(totalGas);
+            }
+            uint gasInFeeToken = LibFees.computeGasFee(request, details.nativeGasAmount);
+
             console.log("Transferring partial input token to devteam for failure gas fees");
             
             console.log("Failed gas fee", gasInFeeToken);
@@ -279,7 +284,7 @@ library SwapExtension {
                 uint totalGas = (details.startGas - gasleft()) + LibConstants.POST_OP_GAS;
                 
                 //console.log("Estimated gas used for trader gas payment", totalGas);
-                details.nativeGasAmount = (totalGas * tx.gasprice);
+                details.nativeGasAmount = LibStorage.getDexibleStorage().computeGasCost(totalGas); //(totalGas * tx.gasprice);
             }
             //use price oracle in vault to get native price in fee token
             details.gasAmount = LibFees.computeGasFee(request, details.nativeGasAmount);
