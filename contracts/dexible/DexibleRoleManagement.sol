@@ -4,13 +4,13 @@ pragma solidity ^0.8.17;
 import "../libraries/LibStorage.sol";
 import "../libraries/LibRoleManagement.sol";
 import "../common/LibConstants.sol";
-
+import "../common/MultiSigConfigurable.sol";
 import "hardhat/console.sol";
 
 /**
  * Role management base contract that manages certain key roles for Dexible contract.
  */
-abstract contract DexibleRoleManagement {
+abstract contract DexibleRoleManagement is MultiSigConfigurable {
 
     //emitted when role is added
     event RoleSet(address indexed member, string role);
@@ -25,27 +25,18 @@ abstract contract DexibleRoleManagement {
         _;
     }
 
-    modifier onlyCreator() {
-        require(LibStorage.getRoleStorage().creator == msg.sender, "Unauthorized");
-        _;
+    function addRelay(address relay) public afterApproval(this.addRelay.selector) {
+        LibStorage.getRoleStorage().setRole(relay, LibConstants.RELAY);
     }
 
-    modifier onlyRoleManager() {
-        require(hasRole(msg.sender, LibConstants.ROLE_MGR), "Unauthorized");
-        _;
-    }
-
-    function addRelay(address relay) public {
-        setRole(relay, LibConstants.RELAY);
-    }
-
-    function addRelays(address[] calldata relays) public {
+    function addRelays(address[] calldata relays) public afterApproval(this.addRelays.selector) {
+        LibRoleManagement.RoleStorage storage rs = LibStorage.getRoleStorage();
         for(uint i=0;i<relays.length;++i) {
-            setRole(relays[i], LibConstants.RELAY);
+            rs.setRole(relays[i], LibConstants.RELAY);
         }
     }
 
-    function removeRelay(address relay) public {
+    function removeRelay(address relay) public onlyApprover {
         removeRole(relay, LibConstants.RELAY);
     }
 
@@ -53,19 +44,19 @@ abstract contract DexibleRoleManagement {
         return hasRole(relay, LibConstants.RELAY);
     }
 
-    function setRole(address member, string memory role) public onlyRoleManager {
+    function setRole(address member, string memory role) public afterApproval(this.setRole.selector) {
          LibStorage.getRoleStorage().setRole(member, role);
     }
 
-    function setRoles(address member, string[] calldata roles) public onlyRoleManager {
+    function setRoles(address member, string[] calldata roles) public afterApproval(this.setRoles.selector) {
          LibStorage.getRoleStorage().setRoles(member, roles);
     }
 
-    function removeRole(address member, string memory role) public onlyRoleManager {
+    function removeRole(address member, string memory role) public onlyApprover {
          LibStorage.getRoleStorage().removeRole(member, role);
     }
 
-    function removeRoles(address member, string[] calldata roles) public onlyRoleManager {
+    function removeRoles(address member, string[] calldata roles) public onlyApprover {
          LibStorage.getRoleStorage().removeRoles(member, roles);
     }
 

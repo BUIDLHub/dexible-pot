@@ -2,14 +2,13 @@
 pragma solidity ^0.8.17;
 
 import "./DexibleRoleManagement.sol";
-import "../common/MultiSigConfigurable.sol";
 import "./IDexible.sol";
 
 /**
  * Base contract to add configuration options for Dexible contract. All config settings
  * require multi-sigs since we extend the MultiSigConfigurable contract. 
  */
-abstract contract ConfigurableDexible is IDexible, MultiSigConfigurable, DexibleRoleManagement {
+abstract contract ConfigurableDexible is IDexible,  DexibleRoleManagement {
 
     using LibDexible for LibDexible.DexibleStorage;
     

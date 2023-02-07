@@ -76,7 +76,7 @@ abstract contract MultiSigConfigurable {
     /**
      * Add a signer to the multi-sig
      */
-    function addSigner(address signer) public onlyApprover {
+    function addSigner(address signer) public afterApproval(this.addSigner.selector) {
         require(address(0) != signer, "Invalid signer");
         LibMultiSig.MultiSigStorage storage ms = LibStorage.getMultiSigStorage();
         ms.approvedSigner[signer] = true;
@@ -86,7 +86,7 @@ abstract contract MultiSigConfigurable {
     /** 
      * Remove a signer from the multi-sig
      */
-    function removeSigner(address signer) public onlyApprover {
+    function removeSigner(address signer) public afterApproval(this.removeSigner.selector) {
         require(address(0) != signer, "Invalid signer");
         LibMultiSig.MultiSigStorage storage ms = LibStorage.getMultiSigStorage();
         delete ms.approvedSigner[signer];
@@ -157,11 +157,18 @@ abstract contract MultiSigConfigurable {
      *****************************************************************************/
     
     /**
-     * Request that the multi-sig's underlying logic change. This registers a requirements
+     * Request that the multi-sig's underlying logic change. This registers a requirement
      * for signers to approve the upgrade.
      */
     function requestUpgrade(address logic) public onlyApprover {
         LibStorage.getMultiSigStorage().requestUpgrade(logic);
+    }
+
+    /**
+     * Cancel a pending upgrade request
+     */
+    function cancelUpgrade() public onlyApprover {
+        LibStorage.getMultiSigStorage().cancelUpgrade();
     }
 
     /**
