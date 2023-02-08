@@ -1,7 +1,7 @@
 const { DeployContext } = require("./deployUtils/DeployContext");
 
 const {deployDexible, setDexibleRelays} = require("./deployDexible");
-const {deployRevshare, setDexibleAddressesOnVault} = require("./deployRevshare");
+const {deployVault, setDexibleAddressesOnVault} = require("./deployVault");
 const { deployArbOracle } = require("./deployArbOracle");
 
 const deployAll = async (props) => {
@@ -11,20 +11,19 @@ const deployAll = async (props) => {
         forceDeploy: props ? props.forceDeploy : false
     });
     await ctx.init();
-    await deployRevshare(props, ctx);
+    await deployVault(props, ctx);
     await deployArbOracle(props, ctx);
     await deployDexible(props, ctx);
-    
-
-    //await setDexibleAddressesOnVault(ctx);
+    await setDexibleAddressesOnVault(ctx);
     //await setDexibleRelays(ctx);
-    const {dxblToken, dexible, revshareVault, arbGasOracle} = ctx;
+    const {dxblToken, dexible, communityVault, arbGasOracle} = ctx;
     console.group("---------------- FINAL ADDRESSES ---------------------");
         console.log("DXBL", dxblToken.address);
-        console.log("RevshareVault", revshareVault.address);
+        console.log("CommunityVault", communityVault.address);
         console.log("Dexible", dexible.address);
+        console.log("ArbGasOracle", arbGasOracle.address);
     console.groupEnd();
-    */
+    
     return ctx;
 }
 

@@ -1,62 +1,21 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./ConfigurableDexible.sol";
-import "../libraries/LibStorage.sol";
-import "./extensions/SwapExtension.sol";
+import "./IDexible.sol";
+import "./baseContracts/DexibleView.sol";
+import "./baseContracts/SwapHandler.sol";
+import "./baseContracts/ConfigBase.sol";
 
-/**
- * Dexible is the core contract used by the protocol to execution various actions. Swapping,
- * heding, staking, etc. are all handled through the Dexible contract. The contract is also
- * coupled to the RevshareVault in that only this contract can request that tokens be rewarded
- * to users.
- */
-contract Dexible is ConfigurableDexible {
+contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
 
-    //used for trycatch calls
-    modifier onlySelf() {
-        require(msg.sender == address(this), "Internal call only");
-        _;
-    }
-    using SwapExtension for SwapTypes.SwapRequest;
-    using LibDexible for LibDexible.DexibleStorage;
-    using SafeERC20 for IERC20;
-
-
-    /**
-     * Initialize Dexible with config settings. This can only be called once after
-     * deployment.
-     */
-    function initialize(LibDexible.DexibleConfig calldata config) public {
-        //initialize dexible storage settings
-        LibDexible.initialize(LibStorage.getDexibleStorage(), config);
-
-        //initialize key roles
-        LibRoleManagement.initializeRoles(LibStorage.getRoleStorage(), config.roleManager);
-
-        //initialize multi-sig settings
-        super.initializeMSConfigurable(config.multiSigConfig);
+    constructor(DexibleStorage.DexibleConfig memory config) {
+        configure(config);
     }
 
-    /**
-     * Set the treasury to send share of revenue and gas fees after approval and timeout
-     */
-    function setTreasury(address t) external override afterApproval(this.setTreasury.selector) {
-        LibDexible.DexibleStorage storage ds = LibStorage.getDexibleStorage();
-        require(t != address(0), "Invalid treasury address");
-        ds.treasury = t;
-    }
-
-    /**
-     * Main swap function that is only callable by Dexible relays. This version of swap 
-     * accounts for affiliate rewards and discounts.
-     */
     function swap(SwapTypes.SwapRequest calldata request) external onlyRelay notPaused {
-        //console.log("----------------------------- START SWAP ------------------------");
-       
         //compute how much gas we have at the outset, plus some gas for loading contract, etc.
         uint startGas = gasleft() + LibConstants.PRE_OP_GAS;
-        SwapExtension.SwapDetails memory details = SwapExtension.SwapDetails({
+        SwapMeta memory details = SwapMeta({
             feeIsInput: false,
             isSelfSwap: false,
             startGas: startGas,
@@ -73,9 +32,9 @@ contract Dexible is ConfigurableDexible {
 
         bool success = false;
         //execute the swap but catch any problem
-        try this._trySwap{
+        try this.fill{
             gas: gasleft() - LibConstants.POST_OP_GAS
-        }(request, details) returns (SwapExtension.SwapDetails memory sd) {
+        }(request, details) returns (SwapMeta memory sd) {
             details = sd;
             success = true;
         } catch {
@@ -83,16 +42,9 @@ contract Dexible is ConfigurableDexible {
             success = false;
         }
 
-        request.postFill(details, success);
-        //console.log("----------------------------- END SWAP ------------------------");
-        
+        postFill(request, details, success);
     }
 
-    /**
-     * This version of swap can be called by anyone. The caller becomes the trader
-     * and they pay all gas fees themselves. This is needed to prevent sybil attacks
-     * where traders can provide their own affiliate address and get discounts.
-     */
     function selfSwap(SwapTypes.SelfSwap calldata request) external notPaused {
         //we create a swap request that has no affiliate attached and thus no
         //automatic discount.
@@ -109,7 +61,7 @@ contract Dexible is ConfigurableDexible {
             tokenOut: request.tokenOut,
             routes: request.routes
         });
-        SwapExtension.SwapDetails memory details = SwapExtension.SwapDetails({
+        SwapMeta memory details = SwapMeta({
             feeIsInput: false,
             isSelfSwap: true,
             startGas: 0,
@@ -123,12 +75,11 @@ contract Dexible is ConfigurableDexible {
             outAmount: 0,
             remainingInBalance: 0
         });
-        details = swapReq.fill(details);
-        swapReq.postFill(details, true);
+        details = this.fill(swapReq, details);
+        postFill(swapReq, details, true);
     }
 
-    function _trySwap(SwapTypes.SwapRequest memory request, SwapExtension.SwapDetails memory details) external onlySelf returns (SwapExtension.SwapDetails memory) {
-        return request.fill(details);
-    }
+
 
 }
+

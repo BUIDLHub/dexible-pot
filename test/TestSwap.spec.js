@@ -6,16 +6,17 @@ const {setBalance: setWETHBalance, asTokenContract: asWETHContract} = require(".
 const {SwapRequest, ExecutionRequest, RouteRequest, FeeDetails, RouterRequest, TokenAmount, } = require("../src/DexibleSwap");
 const { ethers } = require("hardhat");
 
-const NET = 42161;
+const NET = 1; //42161;
 
 const bn = ethers.BigNumber.from;
 const inUnits = ethers.utils.parseUnits;
 const inDecs = ethers.utils.formatUnits;
 
+const GAS_PRICE = NET === 42161 ? inUnits(".1", 9) : inUnits("50", 9);
 const FEE_TOKEN = USDC_BY_NET[NET];
 const FT_DECS = 6;
-const IN_AMT = "10";
-const FTokenContract = asWETHContract(ethers.provider, NET);
+const IN_AMT = "1000";
+const FTokenContract = asUSDCContract(ethers.provider, NET);
 
 describe("TestSwap", function (){
     this.timeout(60000);
@@ -26,14 +27,20 @@ describe("TestSwap", function (){
     let relay = null;
     let trader = null;
     before(async function() {
+
+        const signers = await hre.ethers.getSigners();
+
+        const relays = [signers[1].address];
+        console.log("Using relays", relays);
+
         props = await deployAll({
             timelock: 1,
-            forceDeploy: true
+            forceDeploy: true,
+            relays
         });
-        const {dexible, wallets} = props;
-        relay = wallets.all[2];
+        const {wallets} = props;
         trader = wallets.all[0];
-        await dexible.connect(wallets.dexibleAdmin).addRelay(relay.address);
+        relay = wallets.all[1];
     });
 
     const setupSpend = async (override) => {
@@ -56,7 +63,7 @@ describe("TestSwap", function (){
             chainId: NET,
             buyToken: WETH_BY_NET[NET],
             sellToken: USDC_BY_NET[NET],
-            sellAmount: fullInput.mul(97).div(100).toString(),
+            sellAmount: fullInput.mul(95).div(100).toString(),
             slippagePercentage: .005
         }
         
@@ -66,7 +73,7 @@ describe("TestSwap", function (){
             to: est.to,
             data: est.data,
             gasLimit: 600_000,
-            gasPrice: inUnits(NET===42161 ? ".1":"25", 9)
+            gasPrice: GAS_PRICE //inUnits(NET===42161 ? ".1":"25", 9)
         });
         const r = await txn.wait();
         console.log("Zrx gas", r.gasUsed.toString());
@@ -86,7 +93,7 @@ describe("TestSwap", function (){
             chainId: NET,
             buyToken: WETH_BY_NET[NET],
             sellToken: USDC_BY_NET[NET],
-            sellAmount: fullInput.mul(97).div(100).toString(),
+            sellAmount: fullInput.mul(95).div(100).toString(),
             slippagePercentage: .005
         }
         
@@ -126,13 +133,13 @@ describe("TestSwap", function (){
             routes: [rr]
         });
         const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
-            gasPrice: inUnits(NET===42161?".1":"25", 9)
+            gasPrice: GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
         });
         console.log("Relay gas estimate", estGas.toString());
 
         const txn = await dexible.connect(relay).swap(sr, {
             gasLimit: 2_000_000, //estGas,
-            gasPrice: inUnits(NET===42161?".1":"25", 9)
+            gasPrice: GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
         });
         const r = await txn.wait();
         return r;
@@ -183,7 +190,7 @@ describe("TestSwap", function (){
             routes: [rr]
         };
         const txn = await dexible.connect(trader).selfSwap(sr, {
-            gasPrice: inUnits("25", 9)
+            gasPrice: GAS_PRICE //inUnits("25", 9)
         });
         const r = await txn.wait();
         return r;
@@ -204,25 +211,25 @@ describe("TestSwap", function (){
         let bal = await props.dxblToken.balanceOf(trader.address);
         console.log("Post-Swap DXBL Balance", inDecs(bal, 18));
 
-        const nav = await props.revshareVault.currentNavUSD();
+        const nav = await props.communityVault.currentNavUSD();
         console.log("Pre-Burn NAV", nav);
 
-        const estOut = await props.revshareVault.estimateRedemption(FEE_TOKEN, bal);
+        const estOut = await props.communityVault.estimateRedemption(FEE_TOKEN, bal);
         console.log("Estimated output", estOut.toString());
 
-        console.log("Pre-Burn Assets", await props.revshareVault.assets());
+        console.log("Pre-Burn Assets", await props.communityVault.assets());
         console.log("Pre-Burn Treasury", await FTokenContract.balanceOf(props.wallets.admin.address));
         
         const before = await FTokenContract.balanceOf(trader.address);
         console.log("Pre-burn Fee-token balance", inDecs(before, FT_DECS));
 
-        await props.revshareVault.connect(trader).redeemDXBL(FEE_TOKEN, bal, bn(estOut).mul(999).div(10000));
+        await props.communityVault.connect(trader).redeemDXBL(FEE_TOKEN, bal, bn(estOut).mul(999).div(10000));
         const after = await FTokenContract.balanceOf(trader.address);
         console.log("Post-burn Fee-token balance", inDecs(after, FT_DECS));
         bal = await props.dxblToken.balanceOf(trader.address);
         console.log("post-burn DXBL balance", bal.toString());
-        console.log("Assets", await props.revshareVault.assets());
-        console.log("Post-Burn NAV", await props.revshareVault.currentNavUSD());
+        console.log("Assets", await props.communityVault.assets());
+        console.log("Post-Burn NAV", await props.communityVault.currentNavUSD());
     });
 
     

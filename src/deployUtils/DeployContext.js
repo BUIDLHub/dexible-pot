@@ -54,7 +54,8 @@ class DeployContext {
             this.wallets = {
                 all: signers,
                 owner: signers[0],
-                admin: signers[1]
+                admin: signers[1],
+                dexibleAdmin: signers[1]
             }
         }
         this.chainId = +(await this.ethers.provider.getNetwork()).chainId;

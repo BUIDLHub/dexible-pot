@@ -1,0 +1,68 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "V1MigrationTarget",
+  "sourceName": "contracts/vault/V1Migrateable.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "currentVolume",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastTradeTimestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[24]",
+              "name": "hourlyVolume",
+              "type": "uint256[24]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint16",
+                  "name": "minMMVolume",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "maxMMVolume",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "rate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "index",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct VaultStorage.MintRateRange",
+              "name": "currentMintRate",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct VaultStorage.VaultMigrationV1",
+          "name": "data",
+          "type": "tuple"
+        }
+      ],
+      "name": "migrationFromV1",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

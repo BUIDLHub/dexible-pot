@@ -1,4 +1,4 @@
-const { verify } = require('./RSConfigBuilder');
+const { verify } = require('./VaultConfigBuilder');
 
 class FeeDetails {
 

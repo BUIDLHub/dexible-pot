@@ -1,6 +1,6 @@
 
 const { ethers } = require('hardhat');
-const {verify, MultiSigConfig, MultiSigDefaults} = require('../RSConfigBuilder');
+const {verify, MultiSigConfig, MultiSigDefaults} = require('../VaultConfigBuilder');
 
 const DexibleDefaults = {
     revshareSplitRatio: 50,
@@ -12,7 +12,7 @@ const DexibleDefaults = {
 class DexibleConfig {
 
     static get tupleDefinition() {
-        return `(uint8,uint16,uint16,address,address,address,address,uint112,${MultiSigConfig.tupleDefinition})`
+        return `(uint8,uint16,uint16,address,address,address,address,address,uint112,address[])`
     }
         
     constructor(props) {
@@ -20,21 +20,25 @@ class DexibleConfig {
             'revshareSplitRatio',
             'stdBpsRate',
             'minBpsRate',
-            'revshareManager',
+            'adminMultiSig',
+            'communityVault',
             'treasury',
             'dxblToken',
-            'roleManager',
-            'multiSigConfig'
+            'arbGasOracle',
+            'minFeeUSD',
+            'initialRelays'
         ], props);
+        const ms = props.adminMultiSig.address ? props.adminMultiSig.address : props.adminMultiSig;
         this.revshareSplitRatio = props.revshareSplitRatio;
         this.stdBpsRate = props.stdBpsRate;
         this.minBpsRate = props.minBpsRate;
-        this.revshareManager = props.revshareManager;
+        this.adminMultiSig = ms;
+        this.communityVault = props.communityVault;
         this.treasury = props.treasury;
         this.dxblToken = props.dxblToken;
-        this.roleManager = props.roleManager;
-        this.minFeeUSD = props.minFeeUSD || 0;
-        this.multiSigConfig = new MultiSigConfig(props.multiSigConfig);
+        this.arbGasOracle = props.arbGasOracle;
+        this.minFeeUSD = props.minFeeUSD;
+        this.initialRelays = props.initialRelays;
     }
 }
 

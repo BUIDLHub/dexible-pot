@@ -17,6 +17,7 @@ contract DXBL is ERC20, IDXBL {
     //discount bps per DXBL owned 5 = .05%
     uint32 public discountPerTokenBps;
 
+
     //restrict function to only minter address
     modifier onlyMinter() {
         require(msg.sender == minter, "Unauthorized");
@@ -24,19 +25,16 @@ contract DXBL is ERC20, IDXBL {
     }
 
     event DiscountRateChanged(uint32 newRate);
+    event MinterProposed(address newMinter);
+    event NewMinter(address minter);
 
     //minter is revshare vault
     constructor(address _minter, 
                 uint32 discountRate,
                 string memory name, 
                 string memory symbol) ERC20(name, symbol) {
-        require(_minter != address(0), "Invalid minter");
-        uint32 size;
-        assembly {
-            size := extcodesize(_minter)
-        }
-        require (size > 0, "Minter must be a contract");
-
+                    
+        _minterIsContract(_minter);
         minter = _minter;
         discountPerTokenBps = discountRate;
     }
@@ -45,6 +43,16 @@ contract DXBL is ERC20, IDXBL {
     function setDiscountRate(uint32 discount) external override onlyMinter {
         discountPerTokenBps = discount;
         emit DiscountRateChanged(discount);
+    }
+
+    /**
+     * Minter can change minter address if there was a fork of the minter contract. All security
+     * associated with minter changes is managed at the revshare vault level.
+     */
+    function setNewMinter(address newMinter) external override onlyMinter {
+        _minterIsContract(newMinter);
+        minter = newMinter;
+        emit NewMinter(minter);
     }
 
     /**
@@ -112,5 +120,19 @@ contract DXBL is ERC20, IDXBL {
      */
     function _afterTokenTransfer(address from, address to, uint amount) internal override  {
 
+    }
+
+    /**
+     * Mostly public assurance that address is a contract and not a random wallet
+     */
+    function _minterIsContract(address _minter) internal view {
+
+        //sanity to make sure minter is a contract and not a random address
+        require(_minter != address(0), "Invalid minter");
+        uint32 size;
+        assembly {
+            size := extcodesize(_minter)
+        }
+        require (size > 0, "Minter must be a contract");
     }
 }

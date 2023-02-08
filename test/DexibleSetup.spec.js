@@ -1,3 +1,4 @@
+const { ethers } = require("hardhat");
 const {deployAll} = require("../src/deployAll");
 
 const NET = 42161;
@@ -22,21 +23,40 @@ describe("DexibleSetup", function (){
     };
 
     before(async function() {
+        const signers = await hre.ethers.getSigners();
+        const accts = hre.network.config.accounts;
+        const m = accts.mnemonic;
+        const p = `${accts.path}/${signers.length-1}`;
+        const mSig = signers[signers.length-1];
+        const w = ethers.Wallet.fromMnemonic(m, p);
+        mSig.privateKey = w.privateKey.substring(2);
         props = await deployAll({
             timelock: 1,
-            forceDeploy: true
+            forceDeploy: true,
+            adminMultiSig: mSig
         });
     });
 
 
     const _testChange = async (testDetails) => {
-        const {fnDef, data, expEvent, actualCall} = testDetails;
+        const { expEvent, actualCall} = testDetails;
         
-        const {wallets, dexible} = props;
-        const approver1 = wallets.dexibleAdmin;
-        const approver2 = wallets.all[wallets.all.length-2];
-        const enc = dexible.interface.encodeFunctionData(fnDef, data);
-        let txn = await dexible.connect(approver1).requestChange(enc);
+        const {wallets, adminMultiSig, dexible} = props;
+        
+        if(!adminMultiSig || !wallets.dexibleAdmin) {
+            throw new Error("Missing signers for testing");
+        }
+        let fail = false;
+        try {
+            await actualCall(dexible.connect(wallets.dexibleAdmin));
+        } catch (e) {
+            fail = true;
+        }
+        if(!fail) {
+            throw new Error("Expected to fail when not called by multisig");
+        }
+
+        let txn = await actualCall(dexible.connect(adminMultiSig));
         let r = await txn.wait();
 
         const decodeLogs = async (logs) => {
@@ -53,53 +73,8 @@ describe("DexibleSetup", function (){
             return _logs;
         }
         let logs = await decodeLogs(r.logs);
-        
-        let fail = false;
-        try {
-            //this should not work
-            await actualCall(dexible.connect(approver1));
-            fail = true;
-        } catch (e) { }
-        if(fail) {
-            throw new Error("Expected to fail w/out prior approval");
-        }
-        const cr = logs.ChangeRequested[0];
-        
-        const hash = cr.args.sigHash;
-        const nonce = +cr.args.nonce.toString();
-
-        while(true) {
-            await advanceTime(timestamp + 5);
-            timestamp += 5;
-            try {
-                await dexible.canApplyChange(nonce);
-                break;
-            } catch (error) {
-                console.log(error);
-            }
-            
-        }
-        //ARRAYIFY is import so that ethers treats message as bytes and properly applies
-        //hash to bytes plus eth prefix
-        let msg = ethers.utils.arrayify(hash);
-        const sig = approver2.signMessage(msg);
-        txn = await dexible.connect(approver1).delegatedApproveChange(nonce, approver2.address, sig);
-        r = await txn.wait();
-        
-        logs = await decodeLogs(r.logs);
         if(!logs[expEvent] || logs[expEvent].length === 0) {
             throw new Error(`Expected event ${expEvent}`);
-        }
-
-        //should fail again
-        fail = false;
-        try {
-            //this should not work now that it's been executed
-            await actualCall(dexible.connect(approver1));
-            fail = true;
-        } catch (e) {  }
-        if(fail) {
-            throw new Error("Expected to fail w/out prior approval");
         }
     };
 
@@ -109,43 +84,57 @@ describe("DexibleSetup", function (){
         }
     })
 
-    it("Should set new bps rates after approval", async () => {
+    it("Should set new std bps rates after approval", async () => {
         const {dexible} = props;
         await _testChange({
-            fnDef: "setNewBps((uint16,uint16))",
-            data: [{stdBps: 10, minBps: 4}],
-            expEvent: "ChangedBpsRates",
-            actualCall: async (dexible) => dexible.setNewBps({stdBps: 10, minBps: 4}),
+            fnDef: "setStdBpsRate(uint16)",
+            data: [10],
+            expEvent: "StdBpsChanged",
+            actualCall: async (d) => d.setStdBpsRate(10)
         });
-        const rates = await dexible.bpsRates();
-        if(+rates.stdBps.toString() != 10) {
-            throw new Error("Expected stdBps to change: " + rates.stdBps.toString());
+        const rate = await dexible.stdBpsRate();
+        if(+rate.toString() != 10) {
+            throw new Error("Expected stdBps to change: " + rate.toString());
         }
     });
 
-    it("Should change revshare contract", async () => {
+    it("Should set new min bps rates after approval", async () => {
+        const {dexible} = props;
+        await _testChange({
+            fnDef: "setMinBpsRate(uint16)",
+            data: [5],
+            expEvent: "MinBpsChanged",
+            actualCall: async (d) => d.setMinBpsRate(5)
+        });
+        const rate = await dexible.minBpsRate();
+        if(+rate.toString() != 5) {
+            throw new Error("Expected minBps to change: " + rate.toString());
+        }
+    });
+
+    it("Should change community vault contract", async () => {
         const {dexible, dxblToken} = props;
         await _testChange({
-            fnDef: "setRevshareVault(address)",
+            fnDef: "setCommunityVault(address)",
             data: [dxblToken.address],
-            expEvent: "ChangedRevshareVault",
-            actualCall: async (dexible) => dexible.setRevshareVault(dxblToken.address)
+            expEvent: "VaultChanged",
+            actualCall: async (d) => d.setCommunityVault(dxblToken.address)
         });
-        const rs = await dexible.revshareVault();
+        const rs = await dexible.communityVault();
         if(rs !== dxblToken.address) {
-            throw new Error("Expected to change revshare vault address");
+            throw new Error("Expected to change vault address");
         }
     });
 
     it("Should change revshare split", async () => {
         const {dexible} = props;
         await _testChange({
-            fnDef: "setRevshareSplit(uint8)",
+            fnDef: "setRevshareSplitRatio(uint8)",
             data: [40],
-            expEvent: "ChangedRevshareSplit",
-            actualCall: async (dexible) => dexible.setRevshareSplit(40)
+            expEvent: "SplitRatioChanged",
+            actualCall: async (d) => d.setRevshareSplitRatio(40)
         });
-        const split = await dexible.revshareSplit();
+        const split = await dexible.revshareSplitRatio();
         if(split != 40) {
             throw new Error("Expected split to be 40: " + split);
         }

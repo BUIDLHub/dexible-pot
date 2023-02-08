@@ -20,5 +20,6 @@ interface IDXBL is IERC20, IERC20Metadata {
     function mint(address acct, uint amt) external;
     function burn(address holder, uint amt) external;
     function setDiscountRate(uint32 discount) external;
+    function setNewMinter(address minter) external;
     function computeDiscountedFee(FeeRequest calldata request) external view returns(uint);
 }

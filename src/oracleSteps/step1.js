@@ -1,5 +1,6 @@
 const {DeployStep} = require("../deployUtils/DeployStep");
 const {MULTIPLIER} = require("./OracleConfig");
+const {multiSigs} = require("../multiSigs");
 
 class DeployArbOracle extends DeployStep {
     constructor(props) {
@@ -14,7 +15,13 @@ class DeployArbOracle extends DeployStep {
     }
 
     getDeployArgs() {
-        return [MULTIPLIER];
+        const ctx = this.sequence.context;
+        let adminMS = ctx.adminMultiSig;
+        if(!adminMS) {
+            adminMS = multiSigs[ctx.chainId];
+        }
+        const ms = adminMS.address ? adminMS.address : adminMS;
+        return [ms, MULTIPLIER];
     }
 }
 

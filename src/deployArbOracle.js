@@ -2,6 +2,7 @@ const { DeployContext } = require("./deployUtils/DeployContext");
 const { Deployer } = require("./deployUtils/Deployer");
 const { DeploySequence } = require("./deployUtils/DeploySequence");
 const {steps} = require("./oracleSteps");
+const {multiSigs} = require("./multiSigs");
 
 const deployArbOracle = async (props, ctx) => {
     if(!ctx) {
@@ -12,6 +13,11 @@ const deployArbOracle = async (props, ctx) => {
         });
         await ctx.init();
     }
+
+    if(!ctx.adminMultiSig) {
+        ctx.adminMultiSig = multiSigs[ctx.chainId];
+    }
+
     const seq = new DeploySequence(ctx);
     await Promise.all(steps.map(s=>s({sequence: seq})));
 

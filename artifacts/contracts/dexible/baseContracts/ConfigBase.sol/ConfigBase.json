@@ -1,0 +1,310 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ConfigBase",
+  "sourceName": "contracts/dexible/baseContracts/ConfigBase.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newVault",
+          "type": "address"
+        }
+      ],
+      "name": "ArbGasOracleChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "newRate",
+          "type": "uint16"
+        }
+      ],
+      "name": "MinBpsChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint112",
+          "name": "newMin",
+          "type": "uint112"
+        }
+      ],
+      "name": "MinFeeChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "Paused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "Resumed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "newRate",
+          "type": "uint8"
+        }
+      ],
+      "name": "SplitRatioChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "newRate",
+          "type": "uint16"
+        }
+      ],
+      "name": "StdBpsChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newTreasury",
+          "type": "address"
+        }
+      ],
+      "name": "TreasuryChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newVault",
+          "type": "address"
+        }
+      ],
+      "name": "VaultChanged",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "relays",
+          "type": "address[]"
+        }
+      ],
+      "name": "addRelays",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint8",
+              "name": "revshareSplitRatio",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint16",
+              "name": "stdBpsRate",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "minBpsRate",
+              "type": "uint16"
+            },
+            {
+              "internalType": "address",
+              "name": "adminMultiSig",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "communityVault",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "treasury",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dxblToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "arbGasOracle",
+              "type": "address"
+            },
+            {
+              "internalType": "uint112",
+              "name": "minFeeUSD",
+              "type": "uint112"
+            },
+            {
+              "internalType": "address[]",
+              "name": "initialRelays",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct DexibleStorage.DexibleConfig",
+          "name": "config",
+          "type": "tuple"
+        }
+      ],
+      "name": "configure",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "relay",
+          "type": "address"
+        }
+      ],
+      "name": "removeRelay",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "resume",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IArbitrumGasOracle",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "setArbitrumGasOracle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract ICommunityVault",
+          "name": "vault",
+          "type": "address"
+        }
+      ],
+      "name": "setCommunityVault",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "bps",
+          "type": "uint16"
+        }
+      ],
+      "name": "setMinBpsRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint112",
+          "name": "minFee",
+          "type": "uint112"
+        }
+      ],
+      "name": "setMinFeeUSD",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "bps",
+          "type": "uint8"
+        }
+      ],
+      "name": "setRevshareSplitRatio",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "bps",
+          "type": "uint16"
+        }
+      ],
+      "name": "setStdBpsRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "t",
+          "type": "address"
+        }
+      ],
+      "name": "setTreasury",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

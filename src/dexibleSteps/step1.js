@@ -1,70 +1,46 @@
 const {DeployStep} = require("../deployUtils/DeployStep");
+const {DexibleConfig, DexibleDefaults} = require("./DexibleConfig");
+const { ethers } = require("hardhat");
 
-const DAY = 86400;
-const TIMELOCK = DAY * 2;
-
-class DeployLibRoleManagement extends DeployStep {
+class DeployDexible extends DeployStep {
     constructor(props) {
         super({
             ...props,
-            name: "LibRoleManagement"
+            name: "Dexible"
         });
     }
 
     updateContext({deployed}) {
-        this.sequence.context.libRoleManagement = deployed;
+        this.sequence.context.dexible = new ethers.Contract(deployed.address, deployed.interface || deployed.abi, ethers.provider);
     }
-}
 
-class DeployLibDexible extends DeployStep {
-    constructor(props) {
-        super({
-            ...props,
-            name: "LibDexible"
+    getDeployArgs() {
+
+        const ctx = this.sequence.context;
+        if(!ctx.communityVault) {
+            throw new Error("No revshare vault in deployment context");
+        }
+        if(!ctx.dxblToken) {
+            throw new Error("No DXBL token in deployment context");
+        }
+
+        const {wallets, relays, treasury, arbGasOracle, adminMultiSig} = ctx;
+
+        const config = new DexibleConfig({
+            ...DexibleDefaults,
+            communityVault: ctx.communityVault.address,
+            treasury: treasury || wallets.admin.address,
+            dxblToken: ctx.dxblToken.address,
+            adminMultiSig: adminMultiSig,
+            arbGasOracle: arbGasOracle.address,
+            initialRelays: relays
         });
-    }
-
-    updateContext({deployed}) {
-        this.sequence.context.libDexible = deployed;
-    }
-}
-
-
-class DeployLibMultiSig extends DeployStep {
-    constructor(props) {
-        super({
-            ...props,
-            name: "LibMultiSig"
-        });
-    }
-
-    updateContext({deployed}) {
-        this.sequence.context.libMultiSig = deployed;
-    }
-}
-
-class DeployLibFees extends DeployStep {
-    constructor(props) {
-        super({
-            ...props,
-            name: "LibFees"
-        });
-    }
-
-    updateContext({deployed}) {
-        this.sequence.context.libFees = deployed;
+        return [config];
     }
 }
 
 const addStep = async ({sequence}) => {
-    sequence.steps.push(new DeployLibRoleManagement({sequence}));
-    if(!sequence.context.libMultiSig) {
-        sequence.steps.push(new DeployLibMultiSig({sequence}));
-    }
-    if(!sequence.context.libFees) {
-        sequence.steps.push(new DeployLibFees({sequence}));
-    }
-    sequence.steps.push(new DeployLibDexible({sequence}));
+    sequence.steps.push(new DeployDexible({sequence}));
 }
 
 module.exports = {
