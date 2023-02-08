@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "../VaultStorage.sol";
-import "../IStorageView.sol";
+import "../interfaces/IStorageView.sol";
 
 contract StorageView is IStorageView {
 

@@ -1,0 +1,420 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ISwapHandler",
+  "sourceName": "contracts/dexible/interfaces/ISwapHandler.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "affiliate",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "AffiliatePaid",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "stdRate",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "minRate",
+          "type": "uint32"
+        }
+      ],
+      "name": "ChangedBpsRates",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "split",
+          "type": "uint8"
+        }
+      ],
+      "name": "ChangedRevshareSplit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "old",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newRevshare",
+          "type": "address"
+        }
+      ],
+      "name": "ChangedRevshareVault",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "relay",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "InsufficientGasFunds",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "relay",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaidGasFunds",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "feeToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "gasFeePaid",
+          "type": "uint256"
+        }
+      ],
+      "name": "SwapFailed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "affiliate",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "inputAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "outputAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "feeToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "gasFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "affiliateFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "dexibleFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "SwapSuccess",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "contract IERC20",
+              "name": "feeToken",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint112",
+                  "name": "amount",
+                  "type": "uint112"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct TokenTypes.TokenAmount",
+              "name": "tokenIn",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint112",
+                  "name": "amount",
+                  "type": "uint112"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct TokenTypes.TokenAmount",
+              "name": "tokenOut",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint112",
+                      "name": "amount",
+                      "type": "uint112"
+                    },
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "token",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct TokenTypes.TokenAmount",
+                  "name": "routeAmount",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "routerData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapTypes.RouterRequest[]",
+              "name": "routes",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct SwapTypes.SelfSwap",
+          "name": "request",
+          "type": "tuple"
+        }
+      ],
+      "name": "selfSwap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "requester",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "feeToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "affiliate",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "affiliatePortion",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ExecutionTypes.FeeDetails",
+                  "name": "fee",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ExecutionTypes.ExecutionRequest",
+              "name": "executionRequest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint112",
+                  "name": "amount",
+                  "type": "uint112"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct TokenTypes.TokenAmount",
+              "name": "tokenIn",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint112",
+                  "name": "amount",
+                  "type": "uint112"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct TokenTypes.TokenAmount",
+              "name": "tokenOut",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint112",
+                      "name": "amount",
+                      "type": "uint112"
+                    },
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "token",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct TokenTypes.TokenAmount",
+                  "name": "routeAmount",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "routerData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapTypes.RouterRequest[]",
+              "name": "routes",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct SwapTypes.SwapRequest",
+          "name": "request",
+          "type": "tuple"
+        }
+      ],
+      "name": "swap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

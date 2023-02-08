@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./IDexible.sol";
+import "./interfaces/IDexible.sol";
 import "./baseContracts/DexibleView.sol";
 import "./baseContracts/SwapHandler.sol";
 import "./baseContracts/ConfigBase.sol";

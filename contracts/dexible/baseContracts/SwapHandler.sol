@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "../ISwapHandler.sol";
+import "../interfaces/ISwapHandler.sol";
 import "../DexibleStorage.sol";
 import "./AdminBase.sol";
-import "../../vault/ICommunityVault.sol";
+import "../../vault/interfaces/ICommunityVault.sol";
 import "../LibFees.sol";
 
 import "hardhat/console.sol";

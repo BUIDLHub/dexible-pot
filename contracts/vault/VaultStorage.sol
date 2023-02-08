@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "../token/IDXBL.sol";
-import "./IPriceFeed.sol";
+import "./interfaces/IPriceFeed.sol";
 
 library VaultStorage {
 

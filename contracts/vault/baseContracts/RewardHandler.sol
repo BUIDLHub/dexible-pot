@@ -2,10 +2,10 @@
 pragma solidity ^0.8.17;
 
 import "../VaultStorage.sol";
-import "../IComputationalView.sol";
+import "../interfaces/IComputationalView.sol";
 import "../../common/LibConstants.sol";
 import "./ComputationalView.sol";
-import "../IRewardHandler.sol";
+import "../interfaces/IRewardHandler.sol";
 
 abstract contract RewardHandler is IRewardHandler {
 

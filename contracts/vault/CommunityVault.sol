@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./ICommunityVault.sol";
+import "./interfaces/ICommunityVault.sol";
 import "./baseContracts/StorageView.sol";
 import "./VaultStorage.sol";
 import "./baseContracts/V1Migration.sol";

@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "../IDexibleView.sol";
+import "../interfaces/IDexibleView.sol";
 import "../DexibleStorage.sol";
 
 abstract contract DexibleView is IDexibleView {
