@@ -77,11 +77,13 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
                 revert("Insufficient asset balance to produce expected withdraw amount");
             }
         }
+        
+        //burn the tokens
+        rs.dxbl.burn(msg.sender, dxblAmount);
+
         //if all good, transfer withdraw amount to caller
         IERC20(rewardToken).safeTransfer(msg.sender, wdAmt);
 
-        //burn the tokens
-        rs.dxbl.burn(msg.sender, dxblAmount);
         emit DXBLRedeemed(msg.sender, dxblAmount, rewardToken, wdAmt);
     }
 
