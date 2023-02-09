@@ -1,0 +1,5 @@
+**Proof of Trade (aka "PoT")** aims to promote awareness and use of the Dexible **Smart Order Routing engine**. The Dexible team invented Proof of Trade to promote awareness and increase engagement and retention for the Dexible platform.
+
+To recap the DXBL Litepaper, Proof of Trade mints new tokens as a reward for volume passed through the protocol. Only successful transactions will prove trading activity occurred and be counted towards minting. Trading is but one part of a strategy, and swaps are a fundamental primitive at the basis of all DeFi strategies. At the same time, Dexible enables use cases not available elsewhere it engineered over 2+ years of development. So with Proof of Trade in Dexible version 2.0, it is likely traders will weigh the incentives for proving trading volume with Dexible's set-and-forget capabilities that offer fundamental value for risk mitigation and profit taking.
+
+For more details, visit the technical document at https://github.com/buidlhub/dexible-pot/DXBL_Technical_Paper.pdf
