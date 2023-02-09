@@ -156,48 +156,4 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
         }
         rs.currentMintRate = rs.mintRateRanges[0];
     }
-
-
-    /*
-    
-    fallback() external {
-        
-        bytes4 sel = _getSelector();
-        address addr;
-        if(sel == IStorageView.discountBps.selector ||
-           sel == IStorageView.dailyVolumeUSD.selector ||
-           sel == IStorageView.paused.selector ||
-           sel == IStorageView.adminMultiSig.selector ||
-           sel == IStorageView.dxbl.selector ||
-           sel == IStorageView.dexible.selector ||
-           sel == IStorageView.wrappedNativeToken.selector ||
-           sel == IStorageView.timelockSeconds.selector ||
-           sel == IStorageView.baseMintThreshold.selector
-        ) {
-            addr = address(storageView);
-        }
-
-        assembly {
-            //and call it
-            calldatacopy(0x0, 0x0, calldatasize())
-            let success := delegatecall(sub(gas(), 10000), addr, 0x0, calldatasize(), 0, 0)
-            let retSz := returndatasize()
-            returndatacopy(0, 0, retSz)
-            switch success
-                case 0 {
-                    revert(0, retSz)
-                }
-                default {
-                    return(0, retSz)
-                }
-        }
-    }
-
-    function _getSelector() internal pure returns (bytes4 sel) {
-        assembly {
-            let inputData := mload(0x40)
-            sel := and(shr(inputData, 224), 0xffffffff)
-        }
-    }
-    */
 }
