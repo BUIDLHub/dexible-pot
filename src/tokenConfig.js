@@ -3,6 +3,10 @@ const tokenConfigs = {
         name: "Dexible.Ethereum",
         symbol: "DXBL-ETH"
     },
+    [5]: {
+        name: "Dexible.Goerli",
+        symbol: "DXBL-GOE"
+    },
     [42161]: {
         name: "Dexible.Arbitrum",
         symbol: "DXBL-ARB"

@@ -19,6 +19,7 @@ const deployDexible = async (props, ctx) => {
     if(!ctx.adminMultiSig) {
         ctx.adminMultiSig = multiSigs[ctx.chainId];
     }
+    ctx.treasury = ctx.adminMultiSig.address ? ctx.adminMultiSig.address : ctx.adminMultiSig;
     
     if(!ctx.relays) {
         const rels = relays[ctx.chainId];

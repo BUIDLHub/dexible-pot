@@ -37,7 +37,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      arbitrumOne: process.env.ETHERSCAN_KEY_arbitrum
+      arbitrumOne: process.env.ETHERSCAN_KEY_arbitrum,
+      goerli: process.env.ETHERSCAN_KEY_goerli
     }
   },
   networks: {

@@ -4,6 +4,8 @@ const { DeploySequence } = require("./deployUtils/DeploySequence");
 const {steps} = require("./vaultSteps");
 const {multiSigs} = require("./multiSigs");
 
+const {nativeTokens} = require("./nativeTokens");
+
 const deployVault = async (props, ctx) => {
     if(!ctx) {
          ctx = new DeployContext({
@@ -16,6 +18,7 @@ const deployVault = async (props, ctx) => {
     if(!ctx.adminMultiSig) {
         ctx.adminMultiSig = multiSigs[ctx.chainId];
     }
+    ctx.wrappedNativeToken = ctx.wrappedNativeToken || nativeTokens[ctx.chainId];
     
     const seq = new DeploySequence(ctx);
     await Promise.all(steps.map(s=>s({sequence: seq})));

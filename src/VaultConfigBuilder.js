@@ -1,5 +1,6 @@
 const { ethers } = require("hardhat");
 const { USD_PRECISION } = require("./constants");
+const {nativeTokens} = require("./nativeTokens");
 
 //7 days
 const TIMELOCK = 7 * 86400;

@@ -7,6 +7,14 @@ const relays = {
         "0xb8f9f1235788ff47687d9a9cc35b41197cd04841",
         "0x0e44a8730c247bf1f679a587518a319ea469a105"
     ],
+    [5]: [
+        //staging
+        "0x4980f0d63a9a0b6cc4c71a875b266d39dfaf89a2",
+        "0x697b21ada47644027d7cd00343e5f9fa46852191",
+        //prod
+        "0x038060d2bc338382721ccf23b42305a37025405f",
+        "0x676dd869728880a3328da13f5872e6e2602ef6fb"
+    ],
     [42161]: [
         "0x799e3e2d6b86059cffbffa79bc96e5954aae4023",
         "0xf450b5e343ea6e9632a765f0ee99774aad88f73e",

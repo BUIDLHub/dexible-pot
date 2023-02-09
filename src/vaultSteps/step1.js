@@ -2,7 +2,8 @@ const { ethers } = require("hardhat");
 const {DeployStep} = require("../deployUtils/DeployStep");
 const RSConfig = require("../VaultConfigBuilder");
 const {mintRates} = require("./mintRates");
-const {feeTokens, nativeWrappers} = require("./feeTokens");
+const {feeTokens} = require("../feeTokens");
+const {nativeTokens} = require("../nativeTokens");
 const {USD_PRECISION} = require("../constants");
 const DAY = 86400;
 const TIMELOCK = 7 * DAY;
@@ -28,7 +29,7 @@ const buildInitConfig = (ctx) => {
 
    return new RSConfig.VaultConfig({
     ...RSConfig.VaultDefaults,
-    wrappedNativeToken: nativeWrappers[ctx.chainId],
+    wrappedNativeToken: ctx.wrappedNativeToken || nativeTokens[ctx.chainId],
     adminMultiSig,
     timelockSeconds: timelock || TIMELOCK,
     rateRanges,

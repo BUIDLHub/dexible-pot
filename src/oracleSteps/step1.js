@@ -26,7 +26,9 @@ class DeployArbOracle extends DeployStep {
 }
 
 const addStep = async ({sequence}) => {
-    sequence.steps.push(new DeployArbOracle({sequence}));
+    if(sequence.context.chainId === 42161) {
+        sequence.steps.push(new DeployArbOracle({sequence}));
+    }
 }
 
 module.exports = {

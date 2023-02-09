@@ -32,7 +32,7 @@ class DeployDexible extends DeployStep {
             treasury: treasury || wallets.admin.address,
             dxblToken: ctx.dxblToken.address,
             adminMultiSig: adminMultiSig,
-            arbGasOracle: arbGasOracle.address,
+            arbGasOracle: arbGasOracle ? arbGasOracle.address : ethers.constants.AddressZero,
             initialRelays: relays
         });
         return [config];

@@ -26,6 +26,10 @@ abstract contract DexibleView is IDexibleView {
         return address(DexibleStorage.load().communityVault);
     }
 
+    function adminMultiSig() external view returns(address) {
+        return DexibleStorage.load().adminMultiSig;
+    }
+
     function treasury() external view returns (address){
         return DexibleStorage.load().treasury;
     }
