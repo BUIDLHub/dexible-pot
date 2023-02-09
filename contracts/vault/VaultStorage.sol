@@ -8,9 +8,7 @@ library VaultStorage {
 
     bytes32 constant VAULT_STORAGE_KEY = 0xbfa76ec2967ed7f8d3d40cd552f1451ab03573b596bfce931a6a016f7733078c;
 
-    /****************************************************************************
-     * Initialization Config Settings
-     *****************************************************************************/
+    
     //mint rate bucket
     struct MintRateRangeConfig {
         uint16 minMMVolume;
@@ -48,9 +46,6 @@ library VaultStorage {
         FeeTokenConfig feeTokenConfig;
     }
 
-    /****************************************************************************
-     * Stored Settings
-     *****************************************************************************/
     //stored mint rate range
     struct MintRateRange {
         uint16 minMMVolume;
