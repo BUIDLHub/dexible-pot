@@ -1,5 +1,5 @@
 const {DeployStep} = require("../deployUtils/DeployStep");
-const {tokenConfigs, discountBPS} = require("../tokenConfig");
+const {tokenConfigs, discountBPS} = require("../DXBLConfig");
 
 class DeployDXBL extends DeployStep {
     constructor(props) {

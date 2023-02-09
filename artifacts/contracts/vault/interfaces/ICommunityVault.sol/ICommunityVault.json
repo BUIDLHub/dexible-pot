@@ -416,6 +416,11 @@
           "internalType": "uint256",
           "name": "minOutAmount",
           "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "unwrapNative",
+          "type": "bool"
         }
       ],
       "name": "redeemDXBL",

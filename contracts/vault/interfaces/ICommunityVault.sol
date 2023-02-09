@@ -11,5 +11,5 @@ import "./IRewardHandler.sol";
 import "../../common/IPausable.sol";
 
 interface ICommunityVault is IStorageView, IComputationalView, IRewardHandler, ICommunityVaultEvents, IPausable, V1Migrateable {
-    function redeemDXBL(address feeToken, uint dxblAmount, uint minOutAmount) external;
+    function redeemDXBL(address feeToken, uint dxblAmount, uint minOutAmount, bool unwrapNative) external;
 }

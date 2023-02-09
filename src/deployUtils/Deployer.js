@@ -48,7 +48,7 @@ class Deployer {
         const libraries = await step.getLibraries();
         const args = await step.getDeployArgs();
         
-        console.log(`Deploying ${step.name} with args: ${args}`);
+        console.log(`Deploying ${step.name} with args: ${JSON.stringify(args)}`);
         const deployer = step.getDeployerWallet();
         const con = await context.deployments.deploy(step.name, {
             log: true,

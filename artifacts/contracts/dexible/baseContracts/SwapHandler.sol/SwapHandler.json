@@ -326,6 +326,11 @@
               "type": "bool"
             },
             {
+              "internalType": "address",
+              "name": "preSwapVault",
+              "type": "address"
+            },
+            {
               "internalType": "uint256",
               "name": "startGas",
               "type": "uint256"
@@ -394,6 +399,11 @@
               "internalType": "bool",
               "name": "isSelfSwap",
               "type": "bool"
+            },
+            {
+              "internalType": "address",
+              "name": "preSwapVault",
+              "type": "address"
             },
             {
               "internalType": "uint256",

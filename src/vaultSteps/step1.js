@@ -3,7 +3,6 @@ const {DeployStep} = require("../deployUtils/DeployStep");
 const RSConfig = require("../VaultConfigBuilder");
 const {mintRates} = require("./mintRates");
 const {feeTokens} = require("../feeTokens");
-const {nativeTokens} = require("../nativeTokens");
 const {USD_PRECISION} = require("../constants");
 const DAY = 86400;
 const TIMELOCK = 7 * DAY;
@@ -12,7 +11,7 @@ const BPS = 10_000;
 const inUnits = (n,u) => ethers.utils.parseUnits(n.toString(), u);
 
 const buildInitConfig = (ctx) => {
-    const {timelock, adminMultiSig} = ctx;
+    const {timelock, adminMultiSig, wrappedNativeToken} = ctx;
     console.log("Timelock", timelock);
     
    const rateRanges = mintRates.map(m => new RSConfig.MintRateRangeConfig(m));
@@ -27,10 +26,11 @@ const buildInitConfig = (ctx) => {
     priceFeeds: feeds
    });
 
+   const ms = adminMultiSig.address ? adminMultiSig.address : adminMultiSig;
    return new RSConfig.VaultConfig({
     ...RSConfig.VaultDefaults,
-    wrappedNativeToken: ctx.wrappedNativeToken || nativeTokens[ctx.chainId],
-    adminMultiSig,
+    wrappedNativeToken,
+    adminMultiSig: ms,
     timelockSeconds: timelock || TIMELOCK,
     rateRanges,
     feeTokenConfig

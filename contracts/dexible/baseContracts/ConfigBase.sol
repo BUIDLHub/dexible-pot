@@ -68,7 +68,7 @@ abstract contract ConfigBase is AdminBase, IDexibleConfig {
         emit MinFeeChanged(minFee);
     }
         
-    function setCommunityVault(ICommunityVault vault) external onlyAdmin {
+    function setCommunityVault(ICommunityVault vault) external onlyVault {
         DexibleStorage.load().communityVault = vault;
         emit VaultChanged(address(vault));
     }

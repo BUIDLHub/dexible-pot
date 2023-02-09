@@ -25,13 +25,14 @@ class DeployDexible extends DeployStep {
         }
 
         const {wallets, relays, treasury, arbGasOracle, adminMultiSig} = ctx;
-
+        const ms = adminMultiSig.address ? adminMultiSig.address : adminMultiSig;
+        const tr = treasury.address ? treasury.address : treasury;
         const config = new DexibleConfig({
             ...DexibleDefaults,
             communityVault: ctx.communityVault.address,
-            treasury: treasury || wallets.admin.address,
+            treasury: tr,
             dxblToken: ctx.dxblToken.address,
-            adminMultiSig: adminMultiSig,
+            adminMultiSig: ms,
             arbGasOracle: arbGasOracle ? arbGasOracle.address : ethers.constants.AddressZero,
             initialRelays: relays
         });

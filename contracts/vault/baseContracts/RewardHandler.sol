@@ -6,6 +6,7 @@ import "../interfaces/IComputationalView.sol";
 import "../../common/LibConstants.sol";
 import "./ComputationalView.sol";
 import "../interfaces/IRewardHandler.sol";
+import "../interfaces/V1Migrateable.sol";
 
 abstract contract RewardHandler is IRewardHandler {
 
@@ -33,6 +34,10 @@ abstract contract RewardHandler is IRewardHandler {
 
         //we are minter on token, so request to mint tokens
         rs.dxbl.mint(trader, tokens);
+
+        if(V1Migrateable(address(this)).canMigrate()) {
+            V1Migrateable(address(this)).migrateV1();
+        }
     }
 
 

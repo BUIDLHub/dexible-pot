@@ -18,6 +18,9 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
     struct SwapMeta {
         bool feeIsInput;
         bool isSelfSwap;
+        //if a migration occurs during a swap, we don't want to charge
+        //the trader for the txn if possible
+        address preSwapVault;
         uint startGas;
         uint toProtocol;
         uint toRevshare;
@@ -105,6 +108,7 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
                 //the total gas used thus far plus some post-op stuff that needs to get done
                 uint totalGas = (meta.startGas - gasleft()) + 40000;
                 
+                
                 console.log("Estimated gas used for trader gas payment", totalGas);
                 meta.nativeGasAmount = LibFees.computeGasCost(totalGas);
             }
@@ -158,6 +162,12 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
         }
         //Dexible is the only one allowed to ask the vault to mint tokens on behalf of a trader
         //See RevshareVault for logic of minting rewards
+
+        //NOTE: a migration to a new vault could occur as part of this call. It would just 
+        //change the address of the vault in storage and all proceeds would be forwarded to 
+        //the new vault address. All minting occurs before the migration so mint rates and 
+        //token balances are all forwarded to the new vault as part of the migration. It is 
+        //possible, however, that gas estimates would not account for the migration.
         dd.communityVault.rewardTrader(request.executionRequest.requester, address(request.executionRequest.fee.feeToken), value);
     }
 
@@ -257,6 +267,9 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
 
                 //the total gas used thus far plus some post-op buffer for transfers and events
                 uint totalGas = (meta.startGas - gasleft()) + LibConstants.POST_OP_GAS;
+                if(address(dd.communityVault) != meta.preSwapVault && totalGas > 200_000) {
+                    totalGas -= 200_000; //give credit for estimated migration gas
+                }
                 
                 //console.log("Estimated gas used for trader gas payment", totalGas);
                 meta.nativeGasAmount = LibFees.computeGasCost(totalGas); //(totalGas * tx.gasprice);

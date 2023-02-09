@@ -2,8 +2,6 @@ const { DeployContext } = require("./deployUtils/DeployContext");
 const { Deployer } = require("./deployUtils/Deployer");
 const { DeploySequence } = require("./deployUtils/DeploySequence");
 const {steps} = require("./dexibleSteps");
-const {relays} = require("./relays");
-const {multiSigs} = require("./multiSigs");
 
 const deployDexible = async (props, ctx) => {
     
@@ -15,16 +13,7 @@ const deployDexible = async (props, ctx) => {
         });
         await ctx.init();
     }
-
-    if(!ctx.adminMultiSig) {
-        ctx.adminMultiSig = multiSigs[ctx.chainId];
-    }
-    ctx.treasury = ctx.adminMultiSig.address ? ctx.adminMultiSig.address : ctx.adminMultiSig;
     
-    if(!ctx.relays) {
-        const rels = relays[ctx.chainId];
-        ctx.relays = rels;
-    }
     console.log("Using relays", ctx.relays);
     
     const seq = new DeploySequence(ctx);

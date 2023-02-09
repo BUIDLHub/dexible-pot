@@ -530,8 +530,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/ICommunityVault.sol": {
-      "lastModificationDate": 1675952690526,
-      "contentHash": "401bf510bf98e93362c0b9a7c815985e",
+      "lastModificationDate": 1675963791012,
+      "contentHash": "3f762ffc20f66630dc69192d88114781",
       "sourceName": "contracts/vault/interfaces/ICommunityVault.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1232,8 +1232,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/baseContracts/SwapHandler.sol": {
-      "lastModificationDate": 1675952690523,
-      "contentHash": "6de17b562c69624d5d0d3865b2a2503e",
+      "lastModificationDate": 1675962858441,
+      "contentHash": "89f8166b47df12f4b8aed440f00bf65b",
       "sourceName": "contracts/dexible/baseContracts/SwapHandler.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1328,8 +1328,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/baseContracts/AdminBase.sol": {
-      "lastModificationDate": 1675952690523,
-      "contentHash": "1541e660bb270e7f6c5b0a95d5d46e33",
+      "lastModificationDate": 1675961921307,
+      "contentHash": "6d23fbf7505fb2896722419b1f345840",
       "sourceName": "contracts/dexible/baseContracts/AdminBase.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1499,8 +1499,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/RewardHandler.sol": {
-      "lastModificationDate": 1675952690525,
-      "contentHash": "52bfc54f39273079908f2fa61ef2d83a",
+      "lastModificationDate": 1675962310557,
+      "contentHash": "e0c08b2673798d42cf9daa834fe2c779",
       "sourceName": "contracts/vault/baseContracts/RewardHandler.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1537,7 +1537,8 @@
         "../interfaces/IComputationalView.sol",
         "../../common/LibConstants.sol",
         "./ComputationalView.sol",
-        "../interfaces/IRewardHandler.sol"
+        "../interfaces/IRewardHandler.sol",
+        "../interfaces/V1Migrateable.sol"
       ],
       "versionPragmas": [
         "^0.8.17"
@@ -1547,8 +1548,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/ComputationalView.sol": {
-      "lastModificationDate": 1675952690525,
-      "contentHash": "276b4f35f56dbac8715f3b24d981aa26",
+      "lastModificationDate": 1675957894528,
+      "contentHash": "93e0e7e155b78993b377f3346b848152",
       "sourceName": "contracts/vault/baseContracts/ComputationalView.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1638,8 +1639,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/V1Migration.sol": {
-      "lastModificationDate": 1675952690525,
-      "contentHash": "ee9359b2a9c83d5a44f9d664cc06e9d2",
+      "lastModificationDate": 1675962064984,
+      "contentHash": "22b49d7ec80b476fb60038639a940050",
       "sourceName": "contracts/vault/baseContracts/V1Migration.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1679,12 +1680,13 @@
         "^0.8.17"
       ],
       "artifacts": [
+        "IDexibleUpdate",
         "V1Migration"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/CommunityVault.sol": {
-      "lastModificationDate": 1675952801547,
-      "contentHash": "767d0ffb65408e090d5c0c4522bf770b",
+      "lastModificationDate": 1675965897018,
+      "contentHash": "f4b4e8d58ae504fbbb93f46b5857a010",
       "sourceName": "contracts/vault/CommunityVault.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1730,7 +1732,8 @@
         "^0.8.17"
       ],
       "artifacts": [
-        "CommunityVault"
+        "CommunityVault",
+        "WNative"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/StorageView.sol": {
@@ -1912,8 +1915,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/baseContracts/ConfigBase.sol": {
-      "lastModificationDate": 1675952690523,
-      "contentHash": "18267c092b4c87e8b9ec367af216e73c",
+      "lastModificationDate": 1675961976594,
+      "contentHash": "b6835f1bf65e092061eeda8aa15fdbc2",
       "sourceName": "contracts/dexible/baseContracts/ConfigBase.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1958,8 +1961,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/Dexible.sol": {
-      "lastModificationDate": 1675952690523,
-      "contentHash": "1de1f56818f997827720d0d6a38d6cf7",
+      "lastModificationDate": 1675962717591,
+      "contentHash": "e551407ca1647131bd7174c1978e56a6",
       "sourceName": "contracts/dexible/Dexible.sol",
       "solcConfig": {
         "version": "0.8.17",

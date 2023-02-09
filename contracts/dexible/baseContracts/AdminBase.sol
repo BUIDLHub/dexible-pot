@@ -16,6 +16,11 @@ abstract contract AdminBase {
         _;
     }
 
+    modifier onlyVault() {
+        require(msg.sender == address(DexibleStorage.load().communityVault), "Only vault can execute this function");
+        _;
+    }
+
     modifier onlyRelay() {
         DexibleStorage.DexibleData storage dd = DexibleStorage.load();
         require(dd.relays[msg.sender], "Only relay allowed to call");

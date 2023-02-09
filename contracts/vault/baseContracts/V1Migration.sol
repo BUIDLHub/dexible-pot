@@ -4,6 +4,11 @@ pragma solidity ^0.8.17;
 import "../interfaces/V1Migrateable.sol";
 import "hardhat/console.sol";
 
+interface IDexibleUpdate {
+
+    function setCommunityVault(address vault) external;
+}
+
 abstract contract V1Migration is V1Migrateable {
 
     modifier onlyAdmin() {
@@ -61,6 +66,9 @@ abstract contract V1Migration is V1Migrateable {
         //tell DXBL that there is a new minter
         console.log("Setting DXBL token new minter", vs.pendingMigrationTarget);
         vs.dxbl.setNewMinter(address(target));
+
+        //tell Dexible there is a new vault
+        IDexibleUpdate(vs.dexible).setCommunityVault(address(target));
 
         //create transfer info
         VaultStorage.VaultMigrationV1 memory v1 = VaultStorage.VaultMigrationV1({

@@ -163,8 +163,8 @@ contract ComputationalView is IComputationalView {
         //make sure price valid
         require(answer > 0, "No price data available");
 
-        //10min buffer around 24hr window for chainlink feed to update prices
-        uint stale = block.timestamp - LibConstants.DAY - 600;
+        //make sure prices have been updated in last 48hrs
+        uint stale = block.timestamp - (LibConstants.DAY*2);
         require(updatedAt > stale, "Stale price data");
         return (uint256(answer) * LibConstants.PRICE_PRECISION) / (10**pf.decimals);
     }

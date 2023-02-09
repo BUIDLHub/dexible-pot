@@ -12,6 +12,10 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import "hardhat/console.sol";
 
+interface WNative {
+    function withdraw(uint256 amount) external;
+}
+
 /**
  * The community vault controls the supply of DXBL tokens. It has minting authority on the 
  * token contract so it can request mints/burns on behalf of traders. The Dexible contract
@@ -24,6 +28,7 @@ import "hardhat/console.sol";
 
 contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migration, ICommunityVault {
     using SafeERC20 for IERC20;
+
 
     constructor(VaultStorage.VaultConfig memory config) {
         VaultStorage.VaultData storage vs = VaultStorage.load();
@@ -47,7 +52,11 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
         _initializeFeeTokens(vs, config.feeTokenConfig);
     }
 
-    function redeemDXBL(address rewardToken, uint dxblAmount, uint minOutAmount) public {
+    receive() external payable {
+        require(msg.sender == VaultStorage.load().wrappedNativeToken, "Cannot receive funds except for native withdraws");
+    }
+
+    function redeemDXBL(address rewardToken, uint dxblAmount, uint minOutAmount, bool unwrapNative) public {
         VaultStorage.VaultData storage rs = VaultStorage.load();
         //get the trader's balance to make sure they actually have tokens to burn
         uint traderBal = rs.dxbl.balanceOf(msg.sender);
@@ -82,9 +91,20 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
         rs.dxbl.burn(msg.sender, dxblAmount);
 
         //if all good, transfer withdraw amount to caller
-        IERC20(rewardToken).safeTransfer(msg.sender, wdAmt);
-
         emit DXBLRedeemed(msg.sender, dxblAmount, rewardToken, wdAmt);
+
+        if(unwrapNative && rewardToken == rs.wrappedNativeToken) {
+            WNative(rs.wrappedNativeToken).withdraw(wdAmt);
+            address payable rec = payable(msg.sender);
+            require(rec.send(wdAmt), "Transfer failed");
+        } else {
+            IERC20(rewardToken).safeTransfer(msg.sender, wdAmt);
+        }
+
+        //see if there is a pending migration that we can go ahead with
+        if(canMigrate()) {
+            this.migrateV1();
+        }
     }
 
     /**
@@ -104,7 +124,6 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
         }
 
         vs.dexible = dexible;
-        
     }
 
     /**
