@@ -7,6 +7,10 @@ import "./AdminBase.sol";
 
 abstract contract ConfigBase is AdminBase, IDexibleConfig {
 
+    event ConfigChanged(DexibleStorage.DexibleConfig config);
+    event RelayAdded(address relay);
+    event RelayRemoved(address relay);
+
     function configure(DexibleStorage.DexibleConfig memory config) public {
         DexibleStorage.DexibleData storage ds = DexibleStorage.load();
         if(ds.adminMultiSig != address(0)) {
@@ -34,18 +38,21 @@ abstract contract ConfigBase is AdminBase, IDexibleConfig {
         for(uint i=0;i<config.initialRelays.length;++i) {
             ds.relays[config.initialRelays[i]] = true;
         }
+        emit ConfigChanged(config);
     }
 
     function addRelays(address[] calldata relays) external onlyAdmin {
         DexibleStorage.DexibleData storage ds = DexibleStorage.load();
         for(uint i=0;i<relays.length;++i) {
             ds.relays[relays[i]] = true;
+            emit RelayAdded(relays[i]);
         }
     }
 
     function removeRelay(address relay) external onlyAdmin {
         DexibleStorage.DexibleData storage ds = DexibleStorage.load();
         delete ds.relays[relay];
+        emit RelayRemoved(relay);
     }
 
     function setRevshareSplitRatio(uint8 bps) external onlyAdmin {

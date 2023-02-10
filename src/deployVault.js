@@ -21,7 +21,7 @@ const deployVault = async (props, ctx) => {
 }
 
 const setDexibleAddressesOnVault = async (props) => {
-    const {communityVault, dexible, ethers, dxblToken, wallets} = props;
+    const {communityVault, mockMigration, dexible, ethers, dxblToken, wallets} = props;
     let admin = wallets.dexibleAdmin;
     if(!admin.address) {
         const key = `0x${process.env.MAINNET_OWNER}`;
@@ -40,6 +40,9 @@ const setDexibleAddressesOnVault = async (props) => {
             await vault.configureContracts(admin.address, dxblToken.address);
         } else {
             await vault.configureContracts(dexible.address, dxblToken.address);
+        }
+        if(mockMigration) {
+            await mockMigration.connect(admin).configureContracts(dexible.address, dxblToken.address);
         }
     }
 }

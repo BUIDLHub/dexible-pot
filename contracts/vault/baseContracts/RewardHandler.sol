@@ -10,17 +10,12 @@ import "../interfaces/V1Migrateable.sol";
 
 abstract contract RewardHandler is IRewardHandler {
 
-    modifier onlyDexible() {
-        VaultStorage.VaultData storage vs = VaultStorage.load();
-        require(msg.sender == vs.dexible, "Unauthorized");
-        _;
-    }
-
     /**
      * Modification functions
      */
-    function rewardTrader(address trader, address feeToken, uint amount) external override onlyDexible {
+    function rewardTrader(address trader, address feeToken, uint amount) external override {
         VaultStorage.VaultData storage rs = VaultStorage.load();
+        require(msg.sender == rs.dexible, "Unauthorized");
         uint volumeUSD = IComputationalView(address(this)).computeVolumeUSD(feeToken, amount);
 
         //determine the mint rate

@@ -48,14 +48,14 @@ abstract contract V1Migration is V1Migrateable {
 
         VaultStorage.VaultData storage vs = VaultStorage.load();
         V1MigrationTarget target = V1MigrationTarget(vs.pendingMigrationTarget);
-        console.log("Migrating to", vs.pendingMigrationTarget);
+        //console.log("Migrating to", vs.pendingMigrationTarget);
 
         //pause all operations
         vs.paused = true;
 
         //transfer token balances
         IERC20[] storage tokens = vs.feeTokens;
-        console.log("Transferring balances for", tokens.length, "fee tokens");
+        //console.log("Transferring balances for", tokens.length, "fee tokens");
         for(uint i=0;i<tokens.length;++i) {
             uint b = tokens[i].balanceOf(address(this));
             if(b > 0) {
@@ -64,7 +64,7 @@ abstract contract V1Migration is V1Migrateable {
         }
 
         //tell DXBL that there is a new minter
-        console.log("Setting DXBL token new minter", vs.pendingMigrationTarget);
+        //console.log("Setting DXBL token new minter", vs.pendingMigrationTarget);
         vs.dxbl.setNewMinter(address(target));
 
         //tell Dexible there is a new vault
@@ -85,13 +85,13 @@ abstract contract V1Migration is V1Migrateable {
         });
         
         //ask target to migrate from this vault state
-        console.log("Calling migration target...");
+        //console.log("Calling migration target...");
         target.migrationFromV1(v1);
 
         emit VaultMigrated(address(target));
 
         //then tear down this version
-        console.log("Self-destructing to new target");
+        //console.log("Self-destructing to new target");
         address payable addr = payable(address(target));
         selfdestruct(addr);
     }

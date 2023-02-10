@@ -58,9 +58,6 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
 
     function redeemDXBL(address rewardToken, uint dxblAmount, uint minOutAmount, bool unwrapNative) public {
         VaultStorage.VaultData storage rs = VaultStorage.load();
-        //get the trader's balance to make sure they actually have tokens to burn
-        uint traderBal = rs.dxbl.balanceOf(msg.sender);
-        require(traderBal >= dxblAmount, "Insufficient DXBL balance to redeem");
         
         //estimate how much we could withdraw if there is sufficient reward tokens available
         uint wdAmt = estimateRedemption(rewardToken, dxblAmount);
@@ -88,6 +85,7 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
         }
         
         //burn the tokens
+        //will revert if insufficient amount
         rs.dxbl.burn(msg.sender, dxblAmount);
 
         //if all good, transfer withdraw amount to caller

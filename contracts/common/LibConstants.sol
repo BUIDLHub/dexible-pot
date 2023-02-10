@@ -9,8 +9,8 @@ library LibConstants {
     //gas that was used just to load this contract, etc.
     uint constant PRE_OP_GAS = 40_000;
     
-    //final computation needed to compute and transfer gas fees
-    uint constant POST_OP_GAS = 80_000;
+    //final computation needed to compute and transfer final fees
+    uint constant POST_OP_GAS = 40_000;
     
 
     uint16 constant HOUR = 3600;

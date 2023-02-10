@@ -12,7 +12,6 @@ const inUnits = (n,u) => ethers.utils.parseUnits(n.toString(), u);
 
 const buildInitConfig = (ctx) => {
     const {timelock, adminMultiSig, wrappedNativeToken} = ctx;
-    console.log("Timelock", timelock);
     
    const rateRanges = mintRates.map(m => new RSConfig.MintRateRangeConfig(m));
    const tokens = [];
@@ -57,11 +56,34 @@ class DeployCommunityVault extends DeployStep {
         const config = buildInitConfig(ctx);
         return [config];
     }
-    
+}
+
+class DeployMockMigration extends DeployStep {
+    constructor(props) {
+        super({
+            ...props,
+            name: "MockMigration"
+        });
+    }
+
+    updateContext({deployed}) {
+        this.sequence.context.mockMigration = new ethers.Contract(deployed.address, deployed.interface || deployed.abi, ethers.provider);
+    }
+
+    getDeployArgs() {
+
+        const ctx = this.sequence.context;
+        const config = buildInitConfig(ctx);
+        return [config];
+    }
 }
 
 const addStep = async ({sequence}) => {
+    const ctx = sequence.context;
     sequence.steps.push(new DeployCommunityVault({sequence}));
+    if(ctx.isTest) {
+        sequence.steps.push(new DeployMockMigration({sequence}));
+    }
 }
 
 module.exports = {

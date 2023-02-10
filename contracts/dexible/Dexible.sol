@@ -28,7 +28,7 @@ contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
             outToTrader: 0,
             preDXBLBalance: 0,
             outAmount: 0,
-            remainingInBalance: 0
+            inputAmountDue: 0
         });
 
         bool success = false;
@@ -75,7 +75,7 @@ contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
             outToTrader: 0,
             preDXBLBalance: 0,
             outAmount: 0,
-            remainingInBalance: 0
+            inputAmountDue: 0
         });
         details = this.fill(swapReq, details);
         postFill(swapReq, details, true);

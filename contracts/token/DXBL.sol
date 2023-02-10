@@ -66,7 +66,7 @@ contract DXBL is ERC20, IDXBL {
         uint fee = ((request.amt * request.stdBpsRate) / 10000);
         if(request.referred) {
             //apply 10% discount if referred by affiliate
-            fee = (fee * 10) / 100;
+            fee -= ((fee * 10) / 100);
         }
         
        //get the trader's DXBL token balance

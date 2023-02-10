@@ -1,9 +1,9 @@
 const {deployAll} = require("../src/deployAll");
-const {feeTokens} = require("../src/vaultSteps/feeTokens");
+const {feeTokens} = require("../src/feeTokens");
 const {mintRates} = require("../src/vaultSteps/mintRates");
 const { ethers } = require("hardhat");
 
-const NET = 42161;
+const NET = 1;
 const DAY = 86400;
 
 let timestamp = Math.floor(Date.now()/1000);

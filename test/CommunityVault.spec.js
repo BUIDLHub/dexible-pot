@@ -1,11 +1,11 @@
-const {feeTokens} = require("../src/vaultSteps/feeTokens");
+const {feeTokens} = require("../src/feeTokens");
 const {mintRates} = require("../src/vaultSteps/mintRates");
 const { ethers } = require("hardhat");
 const {asToken: asUSDCToken, asTokenContract: asUSDCContract, setBalance : setUSDCBalance} = require("./setup/USDC");
 const {USD_PRECISION} = require('../src/constants');
 const {deployAll} = require('../src/deployAll');
 
-const NET = 42161;
+const NET = 1;
 const DAY = 86400;
 const HR = DAY / 24;
 const inUnits = ethers.utils.parseUnits;
@@ -62,7 +62,7 @@ describe("communityVault", function() {
             const estOut = await props.communityVault.estimateRedemption(feeTokens[NET][0].token, burnAmt);
         
             console.log("Will burn", inDecs(burnAmt, 18), `(${burnPerc}%) for`, estOut);
-            txn = await communityVault.connect(trader).redeemDXBL(feeTokens[NET][0].token, burnAmt, bn(estOut).mul(999).div(10000));
+            txn = await communityVault.connect(trader).redeemDXBL(feeTokens[NET][0].token, burnAmt, bn(estOut).mul(999).div(10000), false);
             r = await txn.wait();
             console.log("BURN GAS", r.gasUsed.toString());
         }
@@ -160,7 +160,7 @@ describe("communityVault", function() {
         const estOut = await props.communityVault.estimateRedemption(feeTokens[NET][0].token, inUnits(bal.toString(), 18));
         console.log("Est out", estOut);
         
-        await communityVault.connect(trader).redeemDXBL(asUSDCToken(NET).address, inUnits(burn.toString(), 18), bn(estOut).mul(999).div(10000));
+        await communityVault.connect(trader).redeemDXBL(asUSDCToken(NET).address, inUnits(burn.toString(), 18), bn(estOut).mul(999).div(10000), false);
         const postBal = +inDecs(await dxblToken.balanceOf(trader.address));
         if(bal - postBal != 1000) {
             throw new Error("Expected to burn 1k tokens: " + postBal);
@@ -226,7 +226,7 @@ describe("communityVault", function() {
         const estOut = await props.communityVault.estimateRedemption(feeTokens[NET][0].token, burnAmt);
         
         console.log("Will burn", inDecs(burnAmt, 18), "for", estOut);
-        const txn = await communityVault.connect(trader).redeemDXBL(feeTokens[NET][0].token, burnAmt, bn(estOut).mul(999).div(10000));
+        const txn = await communityVault.connect(trader).redeemDXBL(feeTokens[NET][0].token, burnAmt, bn(estOut).mul(999).div(10000), false);
         const r = await txn.wait();
         console.log("GAS USED", r.gasUsed.toString());
         await showState(++cnt)

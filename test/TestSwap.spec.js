@@ -8,6 +8,8 @@ const { ethers } = require("hardhat");
 
 const NET = 1; //42161;
 
+let timestamp = Math.floor(Date.now()/1000);
+
 const bn = ethers.BigNumber.from;
 const inUnits = ethers.utils.parseUnits;
 const inDecs = ethers.utils.formatUnits;
@@ -26,6 +28,7 @@ describe("TestSwap", function (){
     };
     let relay = null;
     let trader = null;
+    let affiliate = null;
     before(async function() {
 
         const signers = await hre.ethers.getSigners();
@@ -33,15 +36,47 @@ describe("TestSwap", function (){
         const relays = [signers[1].address];
         console.log("Using relays", relays);
 
+        const accts = hre.network.config.accounts;
+        const m = accts.mnemonic;
+        const p = `${accts.path}/${signers.length-1}`;
+        const mSig = signers[signers.length-1];
+        const w = ethers.Wallet.fromMnemonic(m, p);
+        mSig.privateKey = w.privateKey.substring(2);
+
         props = await deployAll({
             timelock: 1,
+            isTest: true,
             forceDeploy: true,
-            relays
+            relays,
+            adminMultiSig: mSig
         });
         const {wallets} = props;
         trader = wallets.all[0];
         relay = wallets.all[1];
+        affiliate = wallets.all[2];
     });
+
+    const advanceTime = async (time) => {
+        await ethers.provider.send("evm_mine", [time]);
+    }
+
+    const proposeVaultMigration = async () => {
+        const {communityVault, adminMultiSig, mockMigration} = props;
+        await communityVault.connect(adminMultiSig).scheduleMigration(mockMigration.address);
+       
+        while(true) {
+            await advanceTime(timestamp + 5);
+            timestamp += 5;
+            try {
+                const go = await communityVault.canMigrate();
+                if(go) {
+                    break;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
 
     const setupSpend = async (override) => {
         const {dexible} = props;
@@ -108,8 +143,8 @@ describe("TestSwap", function (){
         
         const feeDetails = new FeeDetails({
             feeToken: FEE_TOKEN,
-            affiliate: ethers.constants.AddressZero,
-            affiliatePortion: bn(0)
+            affiliate: details.affiliate || ethers.constants.AddressZero,
+            affiliatePortion: details.affiliatePortion || bn(0)
         });
         const er = new ExecutionRequest({
             requester: trader.address,
@@ -324,7 +359,50 @@ describe("TestSwap", function (){
         const after = await ethers.provider.getBalance(trader.address);
         console.log("ETH after", inDecs(after, 18));
 
-    })
+    });
+
+    it("Should perform swap after migration", async () => {
+        const affPart = ((IN_AMT*.0004)*.2).toFixed(FT_DECS);
+        let r = await doRelaySwap({ affiliate: affiliate.address, affiliatePortion: inUnits(affPart, FT_DECS)});
+        console.log("Pre-Migrate gas", r.gasUsed);
+        
+        const aBal = await FTokenContract.balanceOf(affiliate.address);
+        if(aBal.eq(0)) {
+            throw new Error("Expected affiliate to be paid");
+        }
+        console.log("Affiliate reward", inDecs(aBal, FT_DECS));
+        const {communityVault, mockMigration} = props;
+        const current = await Promise.all([
+            communityVault.currentNavUSD(),
+            communityVault.currentMintRateUSD(),
+            communityVault.aumUSD(),
+            communityVault.dailyVolumeUSD()
+        ]);
+        console.group("Before migration");
+            console.log("NAV", current[0]);
+            console.log("MintRate", current[1]);
+            console.log("AUM", current[2]);
+            console.log("24H Vol", current[3]);
+        console.groupEnd();
+
+        await proposeVaultMigration();
+        //now swap which will execute migration
+        r = await doRelaySwap({});
+        const after = await Promise.all([
+            mockMigration.currentNavUSD(),
+            mockMigration.currentMintRateUSD(),
+            mockMigration.aumUSD(),
+            mockMigration.dailyVolumeUSD()
+        ]);
+
+        console.group("After migration");
+            console.log("NAV", after[0]);
+            console.log("MintRate", after[1]);
+            console.log("AUM", after[2]);
+            console.log("24H Vol", after[3])
+        console.groupEnd();
+        console.log("Gas used", r.gasUsed.toString());
+    });
 
     
 

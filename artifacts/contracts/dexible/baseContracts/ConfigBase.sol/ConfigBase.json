@@ -20,6 +20,71 @@
       "anonymous": false,
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "uint8",
+              "name": "revshareSplitRatio",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint16",
+              "name": "stdBpsRate",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "minBpsRate",
+              "type": "uint16"
+            },
+            {
+              "internalType": "address",
+              "name": "adminMultiSig",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "communityVault",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "treasury",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dxblToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "arbGasOracle",
+              "type": "address"
+            },
+            {
+              "internalType": "uint112",
+              "name": "minFeeUSD",
+              "type": "uint112"
+            },
+            {
+              "internalType": "address[]",
+              "name": "initialRelays",
+              "type": "address[]"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct DexibleStorage.DexibleConfig",
+          "name": "config",
+          "type": "tuple"
+        }
+      ],
+      "name": "ConfigChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": false,
           "internalType": "uint16",
           "name": "newRate",
@@ -46,6 +111,32 @@
       "anonymous": false,
       "inputs": [],
       "name": "Paused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "relay",
+          "type": "address"
+        }
+      ],
+      "name": "RelayAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "relay",
+          "type": "address"
+        }
+      ],
+      "name": "RelayRemoved",
       "type": "event"
     },
     {

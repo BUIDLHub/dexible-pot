@@ -4,11 +4,13 @@ pragma solidity ^0.8.17;
 import "../VaultStorage.sol";
 import "../interfaces/IComputationalView.sol";
 import "../../common/LibConstants.sol";
+//import "hardhat/console.sol";
 
 contract ComputationalView is IComputationalView {
 
     function convertGasToFeeToken(address feeToken, uint gasCost) public view returns (uint){
         VaultStorage.VaultData storage rs = VaultStorage.load();
+        require(address(rs.allowedFeeTokens[feeToken].feed) != address(0), "Unsupported fee token");
 
         if(feeToken == rs.wrappedNativeToken) {
             //already in native units
@@ -96,7 +98,7 @@ contract ComputationalView is IComputationalView {
          
         //supply is 18decs while aum and nav are expressed in USD units
         nav = (aum*1e18) / supply;
-      //  console.log("--------------- END COMPUTE NAV ---------------------");
+        //console.log("--------------- END COMPUTE NAV ---------------------");
     }
 
     function assets() public view returns (IComputationalView.AssetInfo[] memory tokens){
