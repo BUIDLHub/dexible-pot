@@ -8,8 +8,14 @@ import "./baseContracts/ConfigBase.sol";
 
 contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
 
+    event ReceivedFunds(address from, uint amount);
+
     constructor(DexibleStorage.DexibleConfig memory config) {
         configure(config);
+    }
+
+    receive() external payable {
+       emit ReceivedFunds(msg.sender, msg.value);
     }
 
     function swap(SwapTypes.SwapRequest calldata request) external onlyRelay notPaused {

@@ -1789,8 +1789,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/token/DXBL.sol": {
-      "lastModificationDate": 1675979018865,
-      "contentHash": "5a8d6caaa1d4318f1cce0ec91371dbe8",
+      "lastModificationDate": 1675990053089,
+      "contentHash": "9b2fb7fd5da135888ea229d2172765b3",
       "sourceName": "contracts/token/DXBL.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -1968,8 +1968,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/Dexible.sol": {
-      "lastModificationDate": 1675985304132,
-      "contentHash": "23579fdedb4286f3208029e02702c301",
+      "lastModificationDate": 1676034284605,
+      "contentHash": "2bb7e02b23af3c0de86911ae31d8c362",
       "sourceName": "contracts/dexible/Dexible.sol",
       "solcConfig": {
         "version": "0.8.17",

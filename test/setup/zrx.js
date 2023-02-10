@@ -3,6 +3,7 @@ const { ethers } = require('ethers');
 
 const endpoints = {
     1: "https://api.0x.org/swap/v1/quote?",
+    5: 'https://goerli.api.0x.org/swap/v1/quote?',
     42: "https://kovan.api.0x.org/swap/v1/quote?",
     42161: 'https://arbitrum.api.0x.org/swap/v1/quote?'
 }

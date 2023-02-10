@@ -27,6 +27,7 @@ const _verifyContract = async (props) => {
     const chainId = await getChainId();
     console.log(`Verifying ${contractName}...`);
     const depPath = deploymentPath(chainId);
+    
     jsonPath = path.resolve(depPath, `${contractName}.json`);
     if(!fs.existsSync(jsonPath)) {
         console.log(`${contractName} not deployed, ignoring`);
@@ -35,6 +36,12 @@ const _verifyContract = async (props) => {
 
     const details = await fs.readFileSync(jsonPath);
     const depDetails = JSON.parse(details);
+    const verPath = path.resolve(depPath, `${depDetails.address}.verified`);
+    if(fs.existsSync(verPath)) {
+        console.log(`${contractName} already verified`);
+        return;
+    }
+
     const {args, address} = depDetails;
     try {
         const r = await hre.run("verify:verify", {
@@ -44,6 +51,7 @@ const _verifyContract = async (props) => {
                 ...args,
             ],
         });
+        fs.writeFileSync(verPath, "true");
         console.log(`${contractName} verification result: ${r}`);
     } catch (e) {
         if(e.message.indexOf("already verified") < 0) {
@@ -91,6 +99,6 @@ module.exports = async (props) => {
     
     await verifyDXBL(props);
     await verifyCommunityVault(props);
-   await verifyDexible(props);
-   await verifyArbOracle(props);
+    await verifyDexible(props);
+    await verifyArbOracle(props);
 }
