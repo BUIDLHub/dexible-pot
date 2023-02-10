@@ -7,7 +7,7 @@ import "hardhat/console.sol";
 
 /**
  * The DXBL Token. It uses a minter role to control who can mint and burn tokens. That is 
- * set to the RevshareVault contract so that it completely controls the supply of DXBL.
+ * set to the CommunityVault contract so that it completely controls the supply of DXBL.
  */
 contract DXBL is ERC20, IDXBL {
 
