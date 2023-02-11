@@ -10,6 +10,7 @@ import "../LibFees.sol";
 import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 abstract contract SwapHandler is AdminBase, ISwapHandler {
 
@@ -57,7 +58,7 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
             meta.outAmount = 0;
         }
         
-        //console.log("Expected", request.tokenOut.amount, "Received", meta.outAmount);
+        console.log("Expected", request.tokenOut.amount, "Received", meta.outAmount);
         //first, make sure enough output was generated
         require(meta.outAmount >= request.tokenOut.amount, "Insufficient output generated");
         return meta;
@@ -89,7 +90,7 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
                 //the total gas used thus far plus some post-op stuff that needs to get done
                 uint totalGas = (meta.startGas - gasleft()) + 40000;
                 
-                console.log("Estimated gas used for trader gas payment", totalGas);
+                console.log("Estimated gas used for failed gas payment", totalGas);
                 meta.nativeGasAmount = LibFees.computeGasCost(totalGas);
             }
 
@@ -198,7 +199,16 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
             //this is an interim calculation. Gas fees get deducted later as well. This will
             //also revert if insufficient output was generated to cover all fees
             //console.log("Out amount", meta.outAmount, "Total fees so far", total);
-            require(meta.outAmount > total, "Insufficient output to pay fees");
+            if(meta.outAmount < total) {
+                revert(
+                    string(
+                        abi.encodePacked(
+                            _concatUintString("Insufficient output to pay bps fees. Required: ", total),
+                            _concatUintString(" Output amount: ", meta.outAmount)
+                        )
+                    )
+                );
+            }
             meta.outToTrader = meta.outAmount - total;
         } else {
             //input debits are handled later so we keep track of what's due so far in bps fees
@@ -229,7 +239,7 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
                     totalGas -= 200_000; //give credit for estimated migration gas
                 }
                 
-                //console.log("Estimated gas used for trader gas payment", totalGas);
+                console.log("Estimated gas used for trader gas payment", totalGas);
                 meta.nativeGasAmount = LibFees.computeGasCost(totalGas); //(totalGas * tx.gasprice);
             }
             //use price oracle in vault to get native price in fee token
@@ -244,7 +254,16 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
                 //if output was fee, deduct gas payment from proceeds, revert if there isn't enough output
                 //for it (should have been caught offchain before submit). We make sure the trader gets 
                 //something out of the deal by ensuring output is more than gas.
-                require(meta.outToTrader > meta.gasAmount, "Insufficient output to pay gas fees");
+                if(meta.outToTrader <= meta.gasAmount) {
+                    revert(
+                        string(
+                            abi.encodePacked(
+                                _concatUintString("Insufficient output to pay gas fees. Required: ", meta.gasAmount),
+                                _concatUintString(" Trader output proceeds: ", meta.outToTrader)
+                            )
+                        )
+                    );
+                }
                 meta.outToTrader -= meta.gasAmount;
             } else {
                 //other make sure it's account for as input debit
@@ -260,7 +279,14 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
             //fees
             uint totalInputSpent = request.routes[0].routeAmount.amount + meta.inputAmountDue;
             //console.log("Total input spent", totalInputSpent, "Expected input amount", request.tokenIn.amount);
-            require(totalInputSpent <= request.tokenIn.amount, "Attempt to spend more than anticipated input amount");
+            if(totalInputSpent > request.tokenIn.amount) {
+                revert(
+                    string(
+                        abi.encodePacked(_concatUintString("Attempt to spend more input than anticipated. Total required: ", totalInputSpent),
+                                        _concatUintString(" Max input: ", request.tokenIn.amount))
+                    )
+                );
+            }
             //pay protocol from input token
             feeToken.safeTransferFrom(request.executionRequest.requester, dd.treasury, meta.toProtocol);
 
@@ -363,5 +389,9 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
                 stdBpsRate: ds.stdBpsRate,
                 minBpsRate: ds.minBpsRate
             }));
+    }
+
+    function _concatUintString(string memory s, uint val) private pure returns(string memory) {
+        return string(abi.encodePacked(s, Strings.toString(val)));
     }
 }

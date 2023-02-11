@@ -192,6 +192,7 @@ describe("communityVault", function() {
         console.log("-".repeat(50));
     }
 
+    
     it("Should roll over 24hr volume correctly", async () => {
         const {communityVault,dxblToken, wallets} = props;
         const trader = wallets.all[2];

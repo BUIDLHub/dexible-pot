@@ -18,11 +18,12 @@ abstract contract RewardHandler is IRewardHandler {
         require(msg.sender == rs.dexible, "Unauthorized");
         uint volumeUSD = IComputationalView(address(this)).computeVolumeUSD(feeToken, amount);
 
+        //make the volume adjustment to the pool first to prevent large orders from 
+        //minting tokens for cheaper rate
+        _adjustVolume(volumeUSD);
+
         //determine the mint rate
         uint rate = IComputationalView(address(this)).currentMintRateUSD();
-
-        //make the volume adjustment to the pool
-        _adjustVolume(volumeUSD);
 
         //get the number of DXBL per $1 of volume
         uint tokens = (volumeUSD*1e18) / rate;

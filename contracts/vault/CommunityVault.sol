@@ -45,7 +45,6 @@ contract CommunityVault is StorageView, ComputationalView, RewardHandler, V1Migr
         vs.adminMultiSig = config.adminMultiSig;
         vs.baseMintThreshold = config.baseMintThreshold;
         vs.wrappedNativeToken = config.wrappedNativeToken;
-        console.log("Setting timelock to", config.timelockSeconds);
         vs.timelockSeconds = config.timelockSeconds;
         
         _initializeMintRates(vs, config.rateRanges);

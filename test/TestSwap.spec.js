@@ -127,13 +127,14 @@ describe("TestSwap", function (){
 
         const {dexible} = props;
         await setupSpend();
+        const {insufficientInBuffer, fail} = details;
 
         const fullInput = inUnits(IN_AMT, 6)
         const swapDetails = {
             chainId: NET,
             buyToken: WETH_BY_NET[NET],
             sellToken: USDC_BY_NET[NET],
-            sellAmount: fullInput.mul(95).div(100).toString(),
+            sellAmount: insufficientInBuffer ? fullInput : fullInput.mul(95).div(100).toString(),
             slippagePercentage: .005
         }
         
@@ -172,10 +173,22 @@ describe("TestSwap", function (){
             }),
             routes: [rr]
         });
-        const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
-            gasPrice: GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
-        });
-        console.log("Relay gas estimate", estGas.toString());
+        if(!fail) {
+            const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
+                gasPrice: GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
+            });
+            console.log("Relay gas estimate", estGas.toString());
+        } else  {
+            try {
+                const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
+                    gasPrice: GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
+                });
+            } catch (e) {
+                console.log(e.message);
+                return;
+            }
+        }
+        
 
         const txn = await dexible.connect(relay).swap(sr, {
             gasLimit: 2_000_000, //estGas,
@@ -191,6 +204,8 @@ describe("TestSwap", function (){
             throw new Error("Missing Dexible in context");
         }
 
+        const {insufficientOutBuffer, fail} = details;
+
         const {dexible} = props;
         await setupSpend();
         await setWETHBalance({
@@ -201,23 +216,26 @@ describe("TestSwap", function (){
             balance: 10
         });
 
-        const fullInput = inUnits("1", 18)
+        const inToken = USDC_BY_NET[NET];
+        const outToken = WETH_BY_NET[NET];
+        const fullInput = inUnits("1000", 6)
+
         const swapDetails = {
             chainId: NET,
-            sellToken: WETH_BY_NET[NET],
-            buyToken: USDC_BY_NET[NET],
-            sellAmount: fullInput.mul(95).div(100).toString(),
+            sellToken: inToken,
+            buyToken: outToken,
+            sellAmount: insufficientOutBuffer ? fullInput.mul(8).div(100) : fullInput,
             slippagePercentage: .005
         }
         
         const est = await estimate(swapDetails);
 
-        const minBuy = bn(est.buyAmount).mul(995).div(10000);
+        const minBuy = bn(est.buyAmount).mul(10).div(10000);
         
         const feeDetails = new FeeDetails({
-            feeToken: WETH_BY_NET[NET],
+            feeToken: outToken,
             affiliate: ethers.constants.AddressZero,
-            affiliatePortion: bn(0)
+            affiliatePortion:  bn(0)
         });
         const er = new ExecutionRequest({
             requester: trader.address,
@@ -228,7 +246,7 @@ describe("TestSwap", function (){
             router: est.to,
             spender: est.allowanceTarget,
             routeAmount: new TokenAmount({
-                token: WETH_BY_NET[NET],
+                token:inToken,
                 amount: swapDetails.sellAmount
             }),
             routerData: est.data
@@ -236,19 +254,28 @@ describe("TestSwap", function (){
         const sr = new SwapRequest({
             executionRequest: er,
             tokenIn: new TokenAmount({
-                token: WETH_BY_NET[NET],
+                token: inToken,
                 amount: fullInput
             }),
             tokenOut: new TokenAmount({
-                token: USDC_BY_NET[NET],
+                token: outToken,
                 amount: minBuy
             }),
             routes: [rr]
         });
-        const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
-            gasPrice: GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
-        });
-        console.log("Relay gas estimate", estGas.toString());
+        try {
+            const estGas = await dexible.connect(relay).estimateGas.swap(sr, {
+                gasPrice: insufficientOutBuffer ? GAS_PRICE.mul(4) : GAS_PRICE //inUnits(NET===42161?".1":"25", 9)
+            });
+            console.log("Relay gas estimate", estGas.toString());
+        } catch (e) {
+            if(fail) {
+                console.log(e.message);
+                return;
+            }
+            throw e;
+        }
+        
 
         const txn = await dexible.connect(relay).swap(sr, {
             gasLimit: 2_000_000, //estGas,
@@ -312,7 +339,7 @@ describe("TestSwap", function (){
     it("Should perform zrx swap", async () => {
         await zrxSwap();
     });
-
+   
     it("Should perform direct swap", async () => {
         const r = await doSelfSwap({ });
         console.log("Self-Swap gas used", r.gasUsed);
@@ -345,6 +372,22 @@ describe("TestSwap", function (){
         console.log("Post-Burn NAV", await props.communityVault.currentNavUSD());
     });
 
+    it("Should fail to swap when insufficient buffer for fees", async () => {
+        const r = await doRelaySwap({ 
+            insufficientInBuffer: true,
+            fail: true
+        });
+    });
+    
+
+    it("Should fail to swap when insufficient output generated", async () => {
+        const r = await doRelayWethSwap({
+            fail: true,
+            insufficientOutBuffer: true
+        });
+    })
+
+    
     it("Should perform WETH swap and redeem in native token", async () => {
         const r = await doRelayWethSwap({ });
         console.log("Relayed WETH gas used", r.gasUsed);
@@ -403,7 +446,6 @@ describe("TestSwap", function (){
         console.groupEnd();
         console.log("Gas used", r.gasUsed.toString());
     });
-
     
 
 });

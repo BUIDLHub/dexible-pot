@@ -34,7 +34,7 @@ const setDexibleAddressesOnVault = async (props) => {
     //only allowed by admin at first configuration, then requires multi-sig
     const vault = communityVault.connect(admin);
     const dex = await vault.dexibleContract();
-    if(dex == ethers.constants.AddresZero) {
+    if(dex == ethers.constants.AddressZero) {
         console.log("Setting Dexible and DXBL Contract addresses to:", dexible.address, dxblToken.address);
         if(props.mockDexibleContract) {
             await vault.configureContracts(admin.address, dxblToken.address);
