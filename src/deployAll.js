@@ -35,7 +35,7 @@ const deployAll = async (props) => {
         console.log("DXBL", dxblToken.address);
         console.log("CommunityVault", communityVault.address);
         console.log("Dexible", dexible.address);
-        console.log("ArbGasOracle", arbGasOracle?abrGasOracle.address:ethers.constants.AddressZero);
+        console.log("ArbGasOracle", arbGasOracle?arbGasOracle.address:ethers.constants.AddressZero);
     console.groupEnd();
     
     return ctx;
