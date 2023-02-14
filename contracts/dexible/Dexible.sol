@@ -9,6 +9,7 @@ import "./baseContracts/ConfigBase.sol";
 contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
 
     event ReceivedFunds(address from, uint amount);
+    event WithdrewETH(address indexed admin, uint amount);
 
     constructor(DexibleStorage.DexibleConfig memory config) {
         configure(config);
@@ -87,7 +88,10 @@ contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
         postFill(swapReq, details, true);
     }
 
-
-
+    function withdraw(uint amount) public onlyAdmin {
+        address payable rec = payable(msg.sender);
+        require(rec.send(amount), "Transfer failed");
+        emit WithdrewETH(msg.sender, amount);
+    }
 }
 

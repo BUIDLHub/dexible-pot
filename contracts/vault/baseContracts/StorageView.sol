@@ -16,6 +16,11 @@ contract StorageView is IStorageView {
     }
 
     function dailyVolumeUSD() external view returns(uint) {
+        VaultStorage.VaultData storage vs = VaultStorage.load();
+        if(vs.lastTradeTimestamp < block.timestamp) {
+            return 0;
+        }
+        
         return VaultStorage.load().currentVolume;
     }
 

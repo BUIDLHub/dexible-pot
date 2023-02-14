@@ -1,6 +1,16 @@
 const {deployAll} = require("../src/deployAll");
 const {multiSigs} = require("../src/multiSigs");
+const networks = require("../src/networks");
 
+const pauses = {
+    [networks.Polygon]: 30000,
+    [networks.Arbitrum]: 5000,
+    [networks.Avalanche]: 10000,
+    [networks.BSC]: 5000,
+    [networks.EthereumMainnet]: 5000,
+    [networks.Goerli]: 10000,
+    [networks.Optimism]: 5000,
+}
 const buildConfig = async (props) => {
     let {getUnnamedAccounts, deployments, getChainId} = props;
     
@@ -12,7 +22,7 @@ const buildConfig = async (props) => {
     const cid = await getChainId();
     const ctx = {
         deployments,
-        pauseMS: 5000,
+        pauseMS: pauses[cid],
         chainId: cid,
         wallets: {
             all: wallets,

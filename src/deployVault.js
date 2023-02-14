@@ -31,6 +31,7 @@ const setDexibleAddressesOnVault = async (props) => {
         admin = new ethers.Wallet(key, ethers.provider);
     }
 
+    console.log("Using admin for vault configuration", admin.address);
     //only allowed by admin at first configuration, then requires multi-sig
     const vault = communityVault.connect(admin);
     const dex = await vault.dexibleContract();

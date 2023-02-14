@@ -43,7 +43,7 @@ module.exports = {
       bsc: process.env.ETHERSCAN_KEY_bsc,
       polygon: process.env.ETHERSCAN_KEY_polygon,
       avalanche: process.env.ETHERSCAN_KEY_avalanche,
-      optimism: process.env.ETHERSCAN_KEY_optimism
+      optimisticEthereum: process.env.ETHERSCAN_KEY_optimism
     }
   },
   networks: {
@@ -56,7 +56,8 @@ module.exports = {
       //gasLimit: 600000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
-      chainId: 1,
+      chainId: 56,
+      //chainId: 1,
       //chainId: 42161,
       //chainId: 43114,
       //chainId: 137,
@@ -66,41 +67,44 @@ module.exports = {
         //url: 'https://api.avax.network/ext/bc/C/rpc',
         //blockNumber: 19871939
         //url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
-        url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
-        //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`, 
+        //url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
+        //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+        url: "https://solitary-red-field.bsc.quiknode.pro/8b7c2a0650e84a2daf494744fdbd78f2ad2de8c3/",
+        blockNumber: 25642181
       }
     },
     mainnet: {
       gas: 80000000000,
-      gasPrice: 23000000000,
+      //gasPrice: 23000000000,
       allowUnlimitedContractSize: true,
-      timeout: 600000,
+      timeout: 6000000,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`,
       accounts
     },
     polygon: {
       gas: 80000000000,
-      gasPrice: 110000000000,
+      //gasPrice: 110000000000,
       allowUnlimitedContractSize: true,
       timeout: 6000000,
-      url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+      //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+      url: 'https://divine-stylish-wave.matic.quiknode.pro/ec872cdea1ffca38ebc2ff53de60775f43e475c7/',
       accounts
     },
     avalanche: {
       url: 'https://api.avax.network/ext/bc/C/rpc',
-      gasPrice: 25000000000,
+      //gasPrice: 25000000000,
       chainId: 43114,
       accounts
     },
     bsc: {
       url: "https://bsc-dataseed1.ninicoin.io",
-      gasPrice: 5000000000,
+      //gasPrice: 5000000000,
       chainId: 56,
       accounts
     },
     fantom: {
       url: "https://rpc.ftm.tools",
-      gasPrice: 1130000000000,
+      //gasPrice: 1130000000000,
       chainId: 250,
       accounts
     },
@@ -113,13 +117,13 @@ module.exports = {
     arbitrum: {
       chainId: 42161,
       url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-      gasPrice: 200000000,
+      //gasPrice: 200000000,
       accounts
     },
     optimism: {
       chainId: 10,
       url: `https://optimism-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-      gasPrice: 20000000,
+      //gasPrice: 20000000,
       accounts
     }
   }
