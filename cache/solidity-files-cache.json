@@ -32,8 +32,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -77,8 +76,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -123,8 +121,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -166,8 +163,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -180,49 +176,6 @@
       ],
       "artifacts": [
         "SafeERC20"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1676420223308,
-      "contentHash": "f31ad6fc4bbf9c06203987220156a6ba",
-      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.1"
-      ],
-      "artifacts": [
-        "Address"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
@@ -256,8 +209,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -266,6 +218,48 @@
       ],
       "artifacts": [
         "IERC20Permit"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1676420223308,
+      "contentHash": "f31ad6fc4bbf9c06203987220156a6ba",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "Address"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/common/SwapTypes.sol": {
@@ -299,8 +293,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -345,8 +338,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -391,8 +383,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -434,8 +425,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -482,8 +472,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -529,8 +518,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -572,8 +560,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -623,8 +610,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -666,8 +652,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -676,181 +661,6 @@
       ],
       "artifacts": [
         "IPausable"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/V1Migrateable.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "befda8cf281cdb0d3db84f71a7d29ba0",
-      "sourceName": "contracts/vault/interfaces/V1Migrateable.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "../VaultStorage.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "V1Migrateable",
-        "V1MigrationTarget"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/IStorageView.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "6c30766cef2921bfe503d7230a3d2500",
-      "sourceName": "contracts/vault/interfaces/IStorageView.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "IStorageView"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/IRewardHandler.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "4289c5cb4c56719e110da28604d6c243",
-      "sourceName": "contracts/vault/interfaces/IRewardHandler.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "IRewardHandler"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/IComputationalView.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "1b35ad7904330b1a4e7d19f043d925ce",
-      "sourceName": "contracts/vault/interfaces/IComputationalView.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "IComputationalView"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/ICommunityVaultEvents.sol": {
@@ -884,8 +694,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -894,6 +703,177 @@
       ],
       "artifacts": [
         "ICommunityVaultEvents"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/IComputationalView.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "1b35ad7904330b1a4e7d19f043d925ce",
+      "sourceName": "contracts/vault/interfaces/IComputationalView.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "IComputationalView"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/IStorageView.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "6c30766cef2921bfe503d7230a3d2500",
+      "sourceName": "contracts/vault/interfaces/IStorageView.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "IStorageView"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/V1Migrateable.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "befda8cf281cdb0d3db84f71a7d29ba0",
+      "sourceName": "contracts/vault/interfaces/V1Migrateable.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../VaultStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "V1Migrateable",
+        "V1MigrationTarget"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/interfaces/IRewardHandler.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "4289c5cb4c56719e110da28604d6c243",
+      "sourceName": "contracts/vault/interfaces/IRewardHandler.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "IRewardHandler"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
@@ -927,8 +907,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -974,8 +953,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1020,8 +998,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1066,8 +1043,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -1109,8 +1085,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1154,8 +1129,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -1167,7 +1141,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/baseContracts/DexibleView.sol": {
-      "lastModificationDate": 1676477002323,
+      "lastModificationDate": 1676499649814,
       "contentHash": "7bc4cbbc9a4caa8bd3aa002a73d8e311",
       "sourceName": "contracts/dexible/baseContracts/DexibleView.sol",
       "solcConfig": {
@@ -1197,8 +1171,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1213,7 +1186,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/DexibleStorage.sol": {
-      "lastModificationDate": 1676420331343,
+      "lastModificationDate": 1676499649813,
       "contentHash": "303080620481d763889659e8a4c509bf",
       "sourceName": "contracts/dexible/DexibleStorage.sol",
       "solcConfig": {
@@ -1243,8 +1216,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1260,8 +1232,50 @@
         "DexibleStorage"
       ]
     },
+    "/Users/mdcoon/git/dexible-pot/contracts/dexible/oracles/IStandardGasAdjustments.sol": {
+      "lastModificationDate": 1676499649814,
+      "contentHash": "b300373d04e0fb07b9c7882ab9b52b35",
+      "sourceName": "contracts/dexible/oracles/IStandardGasAdjustments.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "IStandardGasAdjustments"
+      ]
+    },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/baseContracts/SwapHandler.sol": {
-      "lastModificationDate": 1676469749073,
+      "lastModificationDate": 1676499649814,
       "contentHash": "3325d24a1272132127b55da5c00d0a45",
       "sourceName": "contracts/dexible/baseContracts/SwapHandler.sol",
       "solcConfig": {
@@ -1291,8 +1305,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1313,7 +1326,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/LibFees.sol": {
-      "lastModificationDate": 1676467378309,
+      "lastModificationDate": 1676499649813,
       "contentHash": "10538431ea243ffd9d19f18469ccff27",
       "sourceName": "contracts/dexible/LibFees.sol",
       "solcConfig": {
@@ -1343,8 +1356,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1392,8 +1404,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1438,8 +1449,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -1450,8 +1460,52 @@
         "console"
       ]
     },
+    "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1676420223323,
+      "contentHash": "396031251978f8febfd90cb62cb240ec",
+      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./math/Math.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Strings"
+      ]
+    },
     "/Users/mdcoon/git/dexible-pot/contracts/common/LibConstants.sol": {
-      "lastModificationDate": 1676420388122,
+      "lastModificationDate": 1676499649813,
       "contentHash": "d1462ccb9eb74c3ad5f1c2e8a130e66f",
       "sourceName": "contracts/common/LibConstants.sol",
       "solcConfig": {
@@ -1481,8 +1535,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -1524,8 +1577,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -1534,6 +1586,191 @@
       ],
       "artifacts": [
         "IOptimismGasOracle"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1676420223320,
+      "contentHash": "b9c58920ce74d6dc819161786112e7ee",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/mock/MockMigration.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "ca97b40555dfd299893566657c0eb96e",
+      "sourceName": "contracts/vault/mock/MockMigration.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/ICommunityVault.sol",
+        "../baseContracts/StorageView.sol",
+        "../VaultStorage.sol",
+        "../baseContracts/V1Migration.sol",
+        "../baseContracts/RewardHandler.sol",
+        "../baseContracts/ComputationalView.sol",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "MockMigration",
+        "WNative"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/StorageView.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "e5e0e07626e4ab29fca65b4606facc90",
+      "sourceName": "contracts/vault/baseContracts/StorageView.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../VaultStorage.sol",
+        "../interfaces/IStorageView.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "StorageView"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/V1Migration.sol": {
+      "lastModificationDate": 1676420106355,
+      "contentHash": "edac37c8db1b346f7bd257c0d3d4a802",
+      "sourceName": "contracts/vault/baseContracts/V1Migration.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/V1Migrateable.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "IDexibleUpdate",
+        "V1Migration"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/RewardHandler.sol": {
@@ -1567,8 +1804,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1617,8 +1853,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1631,106 +1866,6 @@
       ],
       "artifacts": [
         "ComputationalView"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/mock/MockMigration.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "ca97b40555dfd299893566657c0eb96e",
-      "sourceName": "contracts/vault/mock/MockMigration.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "../interfaces/ICommunityVault.sol",
-        "../baseContracts/StorageView.sol",
-        "../VaultStorage.sol",
-        "../baseContracts/V1Migration.sol",
-        "../baseContracts/RewardHandler.sol",
-        "../baseContracts/ComputationalView.sol",
-        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
-        "hardhat/console.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "MockMigration",
-        "WNative"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/V1Migration.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "edac37c8db1b346f7bd257c0d3d4a802",
-      "sourceName": "contracts/vault/baseContracts/V1Migration.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "../interfaces/V1Migrateable.sol",
-        "hardhat/console.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "IDexibleUpdate",
-        "V1Migration"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/vault/CommunityVault.sol": {
@@ -1764,8 +1899,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1786,10 +1920,10 @@
         "WNative"
       ]
     },
-    "/Users/mdcoon/git/dexible-pot/contracts/vault/baseContracts/StorageView.sol": {
-      "lastModificationDate": 1676420106355,
-      "contentHash": "e5e0e07626e4ab29fca65b4606facc90",
-      "sourceName": "contracts/vault/baseContracts/StorageView.sol",
+    "/Users/mdcoon/git/dexible-pot/contracts/dexible/oracles/StandardGasAdjustments.sol": {
+      "lastModificationDate": 1676499649814,
+      "contentHash": "4a92e4d051b1af41f74bcef0dc5941e8",
+      "sourceName": "contracts/dexible/oracles/StandardGasAdjustments.sol",
       "solcConfig": {
         "version": "0.8.17",
         "settings": {
@@ -1817,19 +1951,17 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
-        "../VaultStorage.sol",
-        "../interfaces/IStorageView.sol"
+        "./IStandardGasAdjustments.sol"
       ],
       "versionPragmas": [
         "^0.8.17"
       ],
       "artifacts": [
-        "StorageView"
+        "StandardGasAdjustments"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/token/DXBL.sol": {
@@ -1863,8 +1995,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1910,8 +2041,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -1956,8 +2086,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -1969,7 +2098,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/baseContracts/ConfigBase.sol": {
-      "lastModificationDate": 1676477109998,
+      "lastModificationDate": 1676499649814,
       "contentHash": "3c7ed051099fa469a9a6a6e844d66f20",
       "sourceName": "contracts/dexible/baseContracts/ConfigBase.sol",
       "solcConfig": {
@@ -1999,8 +2128,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -2016,7 +2144,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/Dexible.sol": {
-      "lastModificationDate": 1676420758983,
+      "lastModificationDate": 1676499649813,
       "contentHash": "5dfaaaf489892511ab349fbf8f60f40c",
       "sourceName": "contracts/dexible/Dexible.sol",
       "solcConfig": {
@@ -2046,8 +2174,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [
@@ -2061,6 +2188,93 @@
       ],
       "artifacts": [
         "Dexible"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/dexible/DexibleProxy.sol": {
+      "lastModificationDate": 1676499649813,
+      "contentHash": "ac461ca40ec4eef15b359108201df0de",
+      "sourceName": "contracts/dexible/DexibleProxy.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./DexibleStorage.sol",
+        "./ProxyStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "DexibleProxy"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-pot/contracts/dexible/ProxyStorage.sol": {
+      "lastModificationDate": 1676499649813,
+      "contentHash": "4890ef02f91cafc21abd34a951a8277f",
+      "sourceName": "contracts/dexible/ProxyStorage.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 100
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.17"
+      ],
+      "artifacts": [
+        "ProxyStorage"
       ]
     },
     "/Users/mdcoon/git/dexible-pot/contracts/dexible/interfaces/IFeeHandler.sol": {
@@ -2094,8 +2308,7 @@
           },
           "metadata": {
             "useLiteralContent": true
-          },
-          "libraries": {}
+          }
         }
       },
       "imports": [],
@@ -2104,271 +2317,6 @@
       ],
       "artifacts": [
         "IFeeHandler"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1676420223323,
-      "contentHash": "396031251978f8febfd90cb62cb240ec",
-      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "./math/Math.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Strings"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-      "lastModificationDate": 1676420223320,
-      "contentHash": "b9c58920ce74d6dc819161786112e7ee",
-      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Math"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/dexible/oracles/IStandardGasAdjustments.sol": {
-      "lastModificationDate": 1676420325747,
-      "contentHash": "b300373d04e0fb07b9c7882ab9b52b35",
-      "sourceName": "contracts/dexible/oracles/IStandardGasAdjustments.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "IStandardGasAdjustments"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/dexible/oracles/StandardGasAdjustments.sol": {
-      "lastModificationDate": 1676469910428,
-      "contentHash": "4a92e4d051b1af41f74bcef0dc5941e8",
-      "sourceName": "contracts/dexible/oracles/StandardGasAdjustments.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "./IStandardGasAdjustments.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "StandardGasAdjustments"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/dexible/DexibleProxy.sol": {
-      "lastModificationDate": 1676420407690,
-      "contentHash": "ac461ca40ec4eef15b359108201df0de",
-      "sourceName": "contracts/dexible/DexibleProxy.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "./DexibleStorage.sol",
-        "./ProxyStorage.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "DexibleProxy"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-pot/contracts/dexible/ProxyStorage.sol": {
-      "lastModificationDate": 1676420407728,
-      "contentHash": "4890ef02f91cafc21abd34a951a8277f",
-      "sourceName": "contracts/dexible/ProxyStorage.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 100
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          },
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.17"
-      ],
-      "artifacts": [
-        "ProxyStorage"
       ]
     }
   }
