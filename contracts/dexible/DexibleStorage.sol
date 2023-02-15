@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import "../token/IDXBL.sol";
 import "./oracles/IArbitrumGasOracle.sol";
 import "../vault/interfaces/ICommunityVault.sol";
+import "./oracles/IStandardGasAdjustments.sol";
 
 library DexibleStorage {
     bytes32 constant DEXIBLE_STORAGE_KEY = 0x949817a987a8e038ef345d3c9d4fd28e49d8e4e09456e57c05a8b2ce2e62866c;
@@ -34,6 +35,9 @@ library DexibleStorage {
 
         //arbitrum gas oracle contract address
         address arbGasOracle;
+
+        //contract that manages the standard gas adjustment types
+        address stdGasAdjustment;
 
         //minimum flat fee to charge if bps fee is too low
         uint112 minFeeUSD;
@@ -77,6 +81,8 @@ library DexibleStorage {
 
         //gas oracle for arb network
         IArbitrumGasOracle arbitrumGasOracle;
+
+        IStandardGasAdjustments stdGasAdjustment;
 
         //whitelisted relay wallets
         mapping(address => bool) relays;

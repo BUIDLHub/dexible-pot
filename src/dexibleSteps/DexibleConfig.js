@@ -12,7 +12,7 @@ const DexibleDefaults = {
 class DexibleConfig {
 
     static get tupleDefinition() {
-        return `(uint8,uint16,uint16,address,address,address,address,address,uint112,address[])`
+        return `(uint8,uint16,uint16,address,address,address,address,address,address,uint112,address[])`
     }
         
     constructor(props) {
@@ -25,6 +25,7 @@ class DexibleConfig {
             'treasury',
             'dxblToken',
             'arbGasOracle',
+            'stdGasAdjustment',
             'minFeeUSD',
             'initialRelays'
         ], props);
@@ -37,6 +38,7 @@ class DexibleConfig {
         this.treasury = props.treasury;
         this.dxblToken = props.dxblToken;
         this.arbGasOracle = props.arbGasOracle;
+        this.stdGasAdjustment = props.stdGasAdjustment;
         this.minFeeUSD = props.minFeeUSD;
         this.initialRelays = props.initialRelays;
     }

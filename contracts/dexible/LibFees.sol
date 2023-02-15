@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import "./oracles/IOptimismGasOracle.sol";
 import "./DexibleStorage.sol";
 import "../common/LibConstants.sol";
+import "./oracles/IStandardGasAdjustments.sol";
+import "hardhat/console.sol";
 
 library LibFees {
 
@@ -12,10 +14,12 @@ library LibFees {
     uint constant OPT = 10;
     IOptimismGasOracle constant optGasOracle = IOptimismGasOracle(0x420000000000000000000000000000000000000F);
 
-    function computeGasCost(uint gasUsed) internal view returns(uint) {
+    function computeGasCost(uint gasUsed, bool success) internal view returns(uint) {
         DexibleStorage.DexibleData storage ds = DexibleStorage.load();
-
-         uint cid;
+        uint add = ds.stdGasAdjustment.adjustment(success ? LibConstants.SWAP_SUCCESS : LibConstants.SWAP_FAILURE);
+        gasUsed += add;
+        //console.log("Gas used to compute cost in fee token", gasUsed, "after adding", add);
+        uint cid;
         assembly {
             cid := chainid()
         }
@@ -25,6 +29,7 @@ library LibFees {
         if(cid == OPT) {
             return (tx.gasprice * gasUsed) + optGasOracle.getL1Fee(msg.data);
         }
+       // console.log("Gas fee", tx.gasprice * gasUsed);
         return tx.gasprice * gasUsed;
     }
 

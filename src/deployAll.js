@@ -30,12 +30,14 @@ const deployAll = async (props) => {
     await deployArbOracle(props, ctx);
     await deployDexible(props, ctx);
     await setDexibleAddressesOnVault(ctx);
-    const {dxblToken, dexible, communityVault, arbGasOracle} = ctx;
+    const {dxblToken, dexibleImpl, stdGasAdjustments, dexible, communityVault, arbGasOracle} = ctx;
     console.group("---------------- FINAL ADDRESSES ---------------------");
         console.log("DXBL", dxblToken.address);
         console.log("CommunityVault", communityVault.address);
+        console.log("DexibleImpl", dexibleImpl.address);
         console.log("Dexible", dexible.address);
         console.log("ArbGasOracle", arbGasOracle?arbGasOracle.address:ethers.constants.AddressZero);
+        console.log("StdGasAdjustments", stdGasAdjustments.address);
     console.groupEnd();
     
     return ctx;

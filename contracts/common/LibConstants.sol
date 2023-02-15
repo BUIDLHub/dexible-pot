@@ -6,13 +6,8 @@ pragma solidity ^0.8.17;
  */
 library LibConstants {
 
-    //gas that was used just to load this contract, etc.
-    uint constant PRE_OP_GAS = 40_000;
     
-    //final computation needed to compute and transfer final fees
-    uint constant POST_OP_GAS = 40_000;
     
-
     uint16 constant HOUR = 3600;
     uint24 constant DAY = 86400;
 
@@ -35,5 +30,11 @@ library LibConstants {
 
     //allowed to submit execution requests
     string public constant RELAY = "RELAY";
+
+    //========================================================================
+    // Gas adjustment types
+    //========================================================================
+    string public constant SWAP_FAILURE = "SWAP_FAILURE";
+    string public constant SWAP_SUCCESS = "SWAP_SUCCESS";
 
 }

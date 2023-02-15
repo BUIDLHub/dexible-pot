@@ -10,8 +10,9 @@ abstract contract ConfigBase is AdminBase, IDexibleConfig {
     event ConfigChanged(DexibleStorage.DexibleConfig config);
     event RelayAdded(address relay);
     event RelayRemoved(address relay);
+    event StdGasAdjustmentChanged(address newContract);
 
-    function configure(DexibleStorage.DexibleConfig memory config) public {
+    function configure(DexibleStorage.DexibleConfig calldata config) public {
         DexibleStorage.DexibleData storage ds = DexibleStorage.load();
         if(ds.adminMultiSig != address(0)) {
             require(msg.sender == ds.adminMultiSig, "Unauthorized");
@@ -24,6 +25,7 @@ abstract contract ConfigBase is AdminBase, IDexibleConfig {
         require(config.stdBpsRate > 0, "Must provide a standard bps fee rate");
         require(config.minBpsRate > 0, "minBpsRate is required");
         require(config.minBpsRate < config.stdBpsRate, "Min bps rate must be less than std");
+        require(config.stdGasAdjustment != address(0), "Invalid stdGasAdjustment address");
 
         ds.adminMultiSig = config.adminMultiSig;
         ds.revshareSplitRatio = config.revshareSplitRatio;
@@ -34,6 +36,7 @@ abstract contract ConfigBase is AdminBase, IDexibleConfig {
         ds.minBpsRate = config.minBpsRate;
         ds.minFeeUSD = config.minFeeUSD; //can be 0
         ds.arbitrumGasOracle = IArbitrumGasOracle(config.arbGasOracle);
+        ds.stdGasAdjustment = IStandardGasAdjustments(config.stdGasAdjustment);
 
         for(uint i=0;i<config.initialRelays.length;++i) {
             ds.relays[config.initialRelays[i]] = true;
@@ -98,5 +101,11 @@ abstract contract ConfigBase is AdminBase, IDexibleConfig {
     function resume() external onlyAdmin {
         DexibleStorage.load().paused = false;
         emit Resumed();
+    }
+
+    function setStdGasAdjustmentContract(address con) external onlyAdmin {
+        require(con != address(0), "Invalid contract address");
+        DexibleStorage.load().stdGasAdjustment = IStandardGasAdjustments(con);
+        emit StdGasAdjustmentChanged(con);
     }
 }

@@ -56,8 +56,8 @@ module.exports = {
       //gasLimit: 600000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
-      chainId: 56,
-      //chainId: 1,
+      //chainId: 56,
+      chainId: 1,
       //chainId: 42161,
       //chainId: 43114,
       //chainId: 137,
@@ -67,10 +67,8 @@ module.exports = {
         //url: 'https://api.avax.network/ext/bc/C/rpc',
         //blockNumber: 19871939
         //url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
-        //url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
+        url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
         //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-        url: "https://solitary-red-field.bsc.quiknode.pro/8b7c2a0650e84a2daf494744fdbd78f2ad2de8c3/",
-        blockNumber: 25642181
       }
     },
     mainnet: {
@@ -86,8 +84,7 @@ module.exports = {
       //gasPrice: 110000000000,
       allowUnlimitedContractSize: true,
       timeout: 6000000,
-      //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
-      url: 'https://divine-stylish-wave.matic.quiknode.pro/ec872cdea1ffca38ebc2ff53de60775f43e475c7/',
+      url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
       accounts
     },
     avalanche: {
@@ -110,7 +107,7 @@ module.exports = {
     },
     goerli: {
       url: `https://goerli.infura.io/v3/${process.env.INFURA_ID}`,
-      gasPrice: 8000000000,
+      //gasPrice: 8000000000,
       chainId: 5,
       accounts
     },

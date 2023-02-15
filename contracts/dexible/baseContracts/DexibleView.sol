@@ -41,4 +41,8 @@ abstract contract DexibleView is IDexibleView {
     function arbitrumGasOracle() external view returns(address){
         return address(DexibleStorage.load().arbitrumGasOracle);
     }
+
+    function stdGasAdjustmentContract() external view returns (address) {
+        return address(DexibleStorage.load().stdGasAdjustment);
+    }
 }

@@ -21,7 +21,6 @@ const deploymentPath = cid => {
     }
 }
 
-
 const _verifyContract = async (props) => {
     let {getChainId, contractName, proxyPath} = props;
     const chainId = await getChainId();
@@ -77,10 +76,17 @@ const verifyCommunityVault = async (props) => {
     });
 }
 
-const verifyDexible = async (props) => {
+const verifyDexibleImpl = async (props) => {
     await _verifyContract({
         ...props,
         contractName: "Dexible"
+    });
+}
+
+const verifyDexible = async (props) => {
+    await _verifyContract({
+        ...props,
+        contractName: "DexibleProxy"
     });
 }
 
@@ -88,6 +94,13 @@ const verifyArbOracle = async (props) => {
     await _verifyContract({
         ...props,
         contractName: "ArbitrumGasOracle"
+    });
+}
+
+const verifyStdGasAdj = async (props) => {
+    await _verifyContract({
+        ...props,
+        contractName: "StandardGasAdjustments"
     });
 }
 
@@ -99,6 +112,8 @@ module.exports = async (props) => {
     
     await verifyDXBL(props);
     await verifyCommunityVault(props);
+    await verifyDexibleImpl(props);
     await verifyDexible(props);
     await verifyArbOracle(props);
+    await verifyStdGasAdj(props);
 }

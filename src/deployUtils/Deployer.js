@@ -33,10 +33,12 @@ class Deployer {
         } else {
             hasDiff = true;
         }
+
+        const doNotUpgrade = context.skipUpgrades?context.skipUpgrades[step.name]:undefined;
         
-        if(!hasDiff) {
-            console.log(`Skipping ${step.name} deployment since same as deployed bytecode`);
-            if(step.isProxy) {
+        if(!hasDiff || doNotUpgrade) {
+            console.log(`Skipping ${step.name} deployment since ${!hasDiff ? 'same as deployed bytecode': 'told not do deploy'}`);
+            if(step.isProxy && !context.doNotUpgrade) {
                 deployed = await step.maybeUpgrade({deployed});
             }
             await step.updateContext({deployed})

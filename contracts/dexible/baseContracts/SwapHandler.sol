@@ -35,8 +35,6 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
     }
 
 
-
-    
     function fill(SwapTypes.SwapRequest calldata request, SwapMeta memory meta) external onlySelf returns (SwapMeta memory)  {
 
         preCheck(request, meta);
@@ -88,10 +86,10 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
         if(meta.feeIsInput) {
             unchecked { 
                 //the total gas used thus far plus some post-op stuff that needs to get done
-                uint totalGas = (meta.startGas - gasleft()) + 40000;
+                uint totalGas = (meta.startGas - gasleft());
                 
                 console.log("Estimated gas used for failed gas payment", totalGas);
-                meta.nativeGasAmount = LibFees.computeGasCost(totalGas);
+                meta.nativeGasAmount = LibFees.computeGasCost(totalGas, false);
             }
 
             gasInFeeToken = dd.communityVault.convertGasToFeeToken(address(request.executionRequest.fee.feeToken), meta.nativeGasAmount);
@@ -234,13 +232,13 @@ abstract contract SwapHandler is AdminBase, ISwapHandler {
                 //console.log("Start gas", meta.startGas, "Left", gasleft());
 
                 //the total gas used thus far plus some post-op buffer for transfers and events
-                uint totalGas = (meta.startGas - gasleft()) + LibConstants.POST_OP_GAS;
+                uint totalGas = (meta.startGas - gasleft());
                 if(address(dd.communityVault) != meta.preSwapVault && totalGas > 200_000) {
                     totalGas -= 200_000; //give credit for estimated migration gas
                 }
                 
                 console.log("Estimated gas used for trader gas payment", totalGas);
-                meta.nativeGasAmount = LibFees.computeGasCost(totalGas); //(totalGas * tx.gasprice);
+                meta.nativeGasAmount = LibFees.computeGasCost(totalGas, true); //(totalGas * tx.gasprice);
             }
             //use price oracle in vault to get native price in fee token
             meta.gasAmount = dd.communityVault.convertGasToFeeToken(address(request.executionRequest.fee.feeToken), meta.nativeGasAmount);

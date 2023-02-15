@@ -11,7 +11,12 @@ contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
     event ReceivedFunds(address from, uint amount);
     event WithdrewETH(address indexed admin, uint amount);
 
+    /*
     constructor(DexibleStorage.DexibleConfig memory config) {
+        configure(config);
+    }
+    */
+    function initialize(DexibleStorage.DexibleConfig calldata config) public {
         configure(config);
     }
 
@@ -21,7 +26,7 @@ contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
 
     function swap(SwapTypes.SwapRequest calldata request) external onlyRelay notPaused {
         //compute how much gas we have at the outset, plus some gas for loading contract, etc.
-        uint startGas = gasleft() + LibConstants.PRE_OP_GAS;
+        uint startGas = gasleft();
         SwapMeta memory details = SwapMeta({
             feeIsInput: false,
             isSelfSwap: false,
@@ -41,7 +46,7 @@ contract Dexible is DexibleView, ConfigBase, SwapHandler, IDexible {
         bool success = false;
         //execute the swap but catch any problem
         try this.fill{
-            gas: gasleft() - LibConstants.POST_OP_GAS
+            gas: gasleft() - 80_000
         }(request, details) returns (SwapMeta memory sd) {
             details = sd;
             success = true;

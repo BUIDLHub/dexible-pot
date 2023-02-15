@@ -11,6 +11,10 @@ const pauses = {
     [networks.Goerli]: 10000,
     [networks.Optimism]: 5000,
 }
+
+const DAY = 86400;
+const TIMELOCK = 7 * DAY;
+
 const buildConfig = async (props) => {
     let {getUnnamedAccounts, deployments, getChainId} = props;
     
@@ -24,6 +28,12 @@ const buildConfig = async (props) => {
         deployments,
         pauseMS: pauses[cid],
         chainId: cid,
+        //do not upgrade Vault since it requires migration
+        skipUpgrades: {
+            DXBL: true,
+            CommunityVault: true
+        },
+        timelock: TIMELOCK,
         wallets: {
             all: wallets,
             owner: dexibleAdmin,

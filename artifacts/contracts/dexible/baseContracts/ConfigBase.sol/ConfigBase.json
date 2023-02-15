@@ -62,6 +62,11 @@
               "type": "address"
             },
             {
+              "internalType": "address",
+              "name": "stdGasAdjustment",
+              "type": "address"
+            },
+            {
               "internalType": "uint112",
               "name": "minFeeUSD",
               "type": "uint112"
@@ -177,6 +182,19 @@
         {
           "indexed": false,
           "internalType": "address",
+          "name": "newContract",
+          "type": "address"
+        }
+      ],
+      "name": "StdGasAdjustmentChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
           "name": "newTreasury",
           "type": "address"
         }
@@ -252,6 +270,11 @@
             {
               "internalType": "address",
               "name": "arbGasOracle",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "stdGasAdjustment",
               "type": "address"
             },
             {
@@ -376,6 +399,19 @@
         }
       ],
       "name": "setStdBpsRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "con",
+          "type": "address"
+        }
+      ],
+      "name": "setStdGasAdjustmentContract",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
