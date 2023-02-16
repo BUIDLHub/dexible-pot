@@ -1,0 +1,29 @@
+{
+    "DXBLToken": {
+        "Ethereum": "0xd6F483787c135B20570E7AcB1d1Fbc557b8F42f8",
+        "Goerli": "0xBd92815050D376b1be1C4f91436e8fe0deA1d9C4",
+        "Optimism": "0x8721c2A2AC9E9Ff72558f31485a1D81ff7F08C3D",
+        "BNBChain": "0xAe654fCCFDfd4bF3A843BE5dEf8d49ee659bBDbF",
+        "Polygon": "0x023314203159afbec50757Df75Bd58097A1C0089",
+        "Arbitrum": "0xCb5973f90D581D03296161fd3a92727Ac4d74807",
+        "Avalanche": "0x3ED9AA206f11b7459e5c3CD88c00766bd0439632"
+    },
+    "CommunityVault": {
+        "Ethereum": "0xEB890541049CCd965D3DD4a3Ec1aD368FD4B26A4",
+        "Goerli": "0x62e7E7730e89373396d922D5E26AE9C63291A48C",
+        "Optimism": "0xf807506B804753F4eE0b0C3027e399A1a2489e44",
+        "BNBChain": "0x8721c2A2AC9E9Ff72558f31485a1D81ff7F08C3D",
+        "Polygon": "0x6C5f10c43d877Ee2a0c4Ffb5c7293896525D15ec",
+        "Arbitrum": "0x663a15bE3CAa06B86558aAaba2F69a7B0B74CEf0",
+        "Avalanche": "0x023314203159afbec50757Df75Bd58097A1C0089"
+    },
+    "Dexible": {
+        "Ethereum": "0xDE62E1b0edAa55aAc5ffBE21984D321706418024",
+        "Goerli": "0x6083F4D58EE5154eF9Ca4b6BE5bC8347945f14Bb",
+        "Optimism": "0x11976D208e1F86e26c3A8c5C97d1DB42eF5b44b2",
+        "BNBChain": "0x53f416f782Ded95285C179F6cEEcA80324Bf4Cf7",
+        "Polygon": "0x67d35DD5f03f8C9fdaC4056743456aC0C27711Ec",
+        "Arbitrum": "0x7222B106ACaC96Dc5DbDBB4Eefa7649Dd1f5d434",
+        "Avalanche": "0x405F6266D9BcC028f04E92b6ac09087806470761"
+    }
+}
